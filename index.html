@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Where Australia Stays</title>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+      color: #222;
+      background: #fafaf7;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 32px 16px;
+      line-height: 1.6;
+    }
+    h1, h2 { font-family: "Source Serif 4", serif; }
+    h1 { font-size: 2.4rem; margin-bottom: 0; }
+    .byline { color: #777; font-size: 0.9rem; }
+    .chart { margin: 24px 0; }
+    footer { margin-top: 48px; font-size: 0.85rem; color: #777; }
+  </style>
+</head>
+<body>
+  <h1>Where Australia Stays</h1>
+  <p class="byline">By [Your Name] · October 2026</p>
+
+  <h2>The Airbnb boom in Melbourne</h2>
+  <p>
+    [Draft text: one or two sentences on what the map shows, e.g. where
+    listings cluster and how many are entire homes rather than spare rooms.]
+  </p>
+  <div id="airbnb_map" class="chart"></div>
+
+  <footer>
+    Data: Inside Airbnb, Melbourne listings (insideairbnb.com), [date of snapshot].
+  </footer>
+
+  <script>
+    vegaEmbed("#airbnb_map", "js/airbnb_map.vg.json", {actions: false});
+  </script>
+</body>
+</html>

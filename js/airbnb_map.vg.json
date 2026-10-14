@@ -1,0 +1,68 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Where Melbourne's Airbnbs are",
+    "subtitle": "Each dot is one listing. Click a room type in the legend to highlight it.",
+    "anchor": "start"
+  },
+  "width": 700,
+  "height": 550,
+  "projection": {"type": "mercator"},
+  "layer": [
+    {
+      "data": {
+        "url": "data/neighbourhoods.geojson",
+        "format": {"type": "json", "property": "features"}
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "#ececec",
+        "stroke": "white",
+        "strokeWidth": 1
+      },
+      "encoding": {
+        "tooltip": [
+          {"field": "properties.neighbourhood", "type": "nominal", "title": "Area"}
+        ]
+      }
+    },
+    {
+      "data": {"url": "data/listings.csv"},
+      "params": [
+        {
+          "name": "roomType",
+          "select": {"type": "point", "fields": ["room_type"]},
+          "bind": "legend"
+        }
+      ],
+      "transform": [
+        {"filter": "isValid(datum.latitude) && isValid(datum.longitude)"}
+      ],
+      "mark": {"type": "circle", "size": 6},
+      "encoding": {
+        "longitude": {"field": "longitude", "type": "quantitative"},
+        "latitude": {"field": "latitude", "type": "quantitative"},
+        "color": {
+          "field": "room_type",
+          "type": "nominal",
+          "title": "Room type",
+          "scale": {
+            "domain": ["Entire home/apt", "Private room", "Shared room", "Hotel room"],
+            "range": ["#e4572e", "#17bebb", "#76b041", "#7a5195"]
+          },
+          "legend": {"orient": "top-right"}
+        },
+        "opacity": {
+          "condition": {"param": "roomType", "value": 0.7},
+          "value": 0.03
+        },
+        "tooltip": [
+          {"field": "name", "type": "nominal", "title": "Listing"},
+          {"field": "neighbourhood", "type": "nominal", "title": "Area"},
+          {"field": "room_type", "type": "nominal", "title": "Room type"},
+          {"field": "price", "type": "quantitative", "title": "Price per night", "format": "$,.0f"}
+        ]
+      }
+    }
+  ]
+}
