@@ -45,15 +45,30 @@
   </p>
   <div id="nights_by_reason" class="chart"></div>
 
+  <h2>The visitors still missing</h2>
+  <p>
+    About 711,000 overseas visitors arrived in Australia in July 2026. That is
+    still 10% fewer than in July 2019, before COVID closed the borders. The gap
+    is not the same everywhere: Western Australia, New South Wales and
+    Queensland are above 90% of their old numbers, while Tasmania, the
+    Northern Territory and the ACT have recovered only around three quarters.
+  </p>
+  <div id="intl_visitors_map" class="chart"></div>
+
   <footer>
     Data: Inside Airbnb, Melbourne listings (insideairbnb.com), [date of snapshot].<br>
     Tourism Research Australia, Domestic Tourism Statistics, overnight trips by
-    main reason, June quarter 2026 (tra.gov.au).
+    main reason, June quarter 2026 (tra.gov.au).<br>
+    Australian Bureau of Statistics, Overseas Arrivals and Departures,
+    short-term visitor arrivals by state or territory of stay, July 2026
+    (abs.gov.au).<br>
+    State boundaries: ABS, via github.com/rowanhogan/australian-states.
   </footer>
 
   <script>
     vegaEmbed("#airbnb_map", "js/airbnb_map.vg.json", {actions: false});
     vegaEmbed("#nights_by_reason", "js/nights_by_reason.vg.json", {actions: false});
+    vegaEmbed("#intl_visitors_map", "js/intl_visitors_choropleth.vg.json", {actions: false});
   </script>
 </body>
 </html>
