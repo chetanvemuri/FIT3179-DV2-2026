@@ -1,0 +1,53 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Almost 4 in 10 travel nights are spent visiting friends and family",
+    "subtitle": "Nights on domestic overnight trips by main reason for the trip, June quarter 2026 (millions)",
+    "anchor": "start"
+  },
+  "width": 600,
+  "height": 200,
+  "data": {"url": "data/nights_by_reason.csv"},
+  "transform": [
+    {"calculate": "datum.nights / 1000000", "as": "nights_m"},
+    {"joinaggregate": [{"op": "sum", "field": "nights", "as": "total"}]},
+    {"calculate": "datum.nights / datum.total", "as": "share"}
+  ],
+  "encoding": {
+    "y": {
+      "field": "reason",
+      "type": "nominal",
+      "sort": "-x",
+      "title": null,
+      "axis": {"ticks": false, "domain": false, "labelFontSize": 12, "labelLimit": 260}
+    },
+    "x": {
+      "field": "nights_m",
+      "type": "quantitative",
+      "axis": null
+    }
+  },
+  "layer": [
+    {
+      "mark": {"type": "bar", "cornerRadiusEnd": 2},
+      "encoding": {
+        "color": {
+          "condition": {"test": "datum.reason === 'Visiting friends and relatives'", "value": "#17bebb"},
+          "value": "#c8c8c8"
+        },
+        "tooltip": [
+          {"field": "reason", "type": "nominal", "title": "Reason"},
+          {"field": "nights_m", "type": "quantitative", "title": "Nights (millions)", "format": ".1f"},
+          {"field": "share", "type": "quantitative", "title": "Share of all nights", "format": ".0%"}
+        ]
+      }
+    },
+    {
+      "mark": {"type": "text", "align": "left", "dx": 4, "fontSize": 11, "color": "#555"},
+      "encoding": {
+        "text": {"field": "nights_m", "type": "quantitative", "format": ".1f"}
+      }
+    }
+  ],
+  "config": {"view": {"stroke": null}}
+}

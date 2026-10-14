@@ -36,12 +36,24 @@
   </p>
   <div id="airbnb_map" class="chart"></div>
 
+  <h2>Why Australians travel</h2>
+  <p>
+    Australians spent 89 million nights away from home on overnight trips in
+    the June quarter of 2026. Holidays made up the largest share, but almost
+    4 in 10 nights were spent visiting friends and relatives, often sleeping
+    in a spare room rather than paying for a bed.
+  </p>
+  <div id="nights_by_reason" class="chart"></div>
+
   <footer>
-    Data: Inside Airbnb, Melbourne listings (insideairbnb.com), [date of snapshot].
+    Data: Inside Airbnb, Melbourne listings (insideairbnb.com), [date of snapshot].<br>
+    Tourism Research Australia, Domestic Tourism Statistics, overnight trips by
+    main reason, June quarter 2026 (tra.gov.au).
   </footer>
 
   <script>
     vegaEmbed("#airbnb_map", "js/airbnb_map.vg.json", {actions: false});
+    vegaEmbed("#nights_by_reason", "js/nights_by_reason.vg.json", {actions: false});
   </script>
 </body>
 </html>
