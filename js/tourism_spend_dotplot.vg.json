@@ -1,0 +1,99 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Tourists spend more on meals than on a bed",
+    "subtitle": "What tourists in Australia spent their money on, 2024\u201325 ($ billion)",
+    "anchor": "start"
+  },
+  "width": 520,
+  "height": 380,
+  "data": {
+    "url": "data/tourism_spend_by_product.csv"
+  },
+  "encoding": {
+    "y": {
+      "field": "product",
+      "type": "nominal",
+      "sort": null,
+      "title": null,
+      "axis": {
+        "ticks": false,
+        "domain": false,
+        "labelFontSize": 12,
+        "labelLimit": 400,
+        "grid": true,
+        "gridColor": "#eeeeee"
+      }
+    },
+    "x": {
+      "field": "spend_bn",
+      "type": "quantitative",
+      "title": "$ billion",
+      "scale": {
+        "domain": [
+          0,
+          35
+        ]
+      },
+      "axis": {
+        "grid": false,
+        "tickCount": 7,
+        "domain": false,
+        "labelColor": "#777",
+        "titleColor": "#777"
+      }
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "circle",
+        "size": 110,
+        "opacity": 1
+      },
+      "encoding": {
+        "color": {
+          "condition": {
+            "test": "datum.product === 'Accommodation services'",
+            "value": "#e4572e"
+          },
+          "value": "#6a51a3"
+        },
+        "tooltip": [
+          {
+            "field": "product",
+            "type": "nominal",
+            "title": "Spent on"
+          },
+          {
+            "field": "spend_bn",
+            "type": "quantitative",
+            "title": "$ billion",
+            "format": ".1f"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 9,
+        "fontSize": 11,
+        "color": "#555"
+      },
+      "encoding": {
+        "text": {
+          "field": "spend_bn",
+          "type": "quantitative",
+          "format": "$.1f"
+        }
+      }
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": null
+    }
+  }
+}
