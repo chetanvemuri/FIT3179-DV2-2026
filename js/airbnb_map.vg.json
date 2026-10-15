@@ -7,61 +7,153 @@
   },
   "width": 700,
   "height": 550,
-  "projection": {"type": "mercator"},
+  "projection": {
+    "type": "mercator"
+  },
   "layer": [
     {
       "data": {
         "url": "data/neighbourhoods.geojson",
-        "format": {"type": "json", "property": "features"}
+        "format": {
+          "type": "json",
+          "property": "features"
+        }
       },
       "mark": {
         "type": "geoshape",
-        "fill": "#ececec",
-        "stroke": "white",
+        "fill": "#e8e1d5",
+        "stroke": "#ffffff",
         "strokeWidth": 1
       },
       "encoding": {
         "tooltip": [
-          {"field": "properties.neighbourhood", "type": "nominal", "title": "Area"}
+          {
+            "field": "properties.neighbourhood",
+            "type": "nominal",
+            "title": "Area"
+          }
         ]
       }
     },
     {
-      "data": {"url": "data/listings.csv"},
+      "data": {
+        "url": "data/listings.csv"
+      },
       "params": [
         {
           "name": "roomType",
-          "select": {"type": "point", "fields": ["room_type"]},
+          "select": {
+            "type": "point",
+            "fields": [
+              "room_type"
+            ]
+          },
           "bind": "legend"
         }
       ],
       "transform": [
-        {"filter": "isValid(datum.latitude) && isValid(datum.longitude)"}
+        {
+          "filter": "isValid(datum.latitude) && isValid(datum.longitude)"
+        }
       ],
-      "mark": {"type": "circle", "size": 6},
+      "mark": {
+        "type": "circle",
+        "size": 6
+      },
       "encoding": {
-        "longitude": {"field": "longitude", "type": "quantitative"},
-        "latitude": {"field": "latitude", "type": "quantitative"},
+        "longitude": {
+          "field": "longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "latitude",
+          "type": "quantitative"
+        },
         "color": {
           "field": "room_type",
           "type": "nominal",
           "title": "Room type",
           "scale": {
-            "domain": ["Entire home/apt", "Private room", "Shared room", "Hotel room"],
-            "range": ["#e4572e", "#17bebb", "#76b041", "#7a5195"]
+            "domain": [
+              "Entire home/apt",
+              "Private room",
+              "Shared room",
+              "Hotel room"
+            ],
+            "range": [
+              "#00849e",
+              "#dc5d36",
+              "#7a52a6",
+              "#9c8a0e"
+            ]
           },
-          "legend": {"orient": "top-right"}
+          "legend": {
+            "orient": "top-right",
+            "symbolSize": 120,
+            "labelFontSize": 12
+          }
         },
         "opacity": {
-          "condition": {"param": "roomType", "value": 0.7},
+          "condition": {
+            "param": "roomType",
+            "value": 0.7
+          },
           "value": 0.03
         },
         "tooltip": [
-          {"field": "name", "type": "nominal", "title": "Listing"},
-          {"field": "neighbourhood", "type": "nominal", "title": "Area"},
-          {"field": "room_type", "type": "nominal", "title": "Room type"},
-          {"field": "price", "type": "quantitative", "title": "Price per night", "format": "$,.0f"}
+          {
+            "field": "name",
+            "type": "nominal",
+            "title": "Listing"
+          },
+          {
+            "field": "neighbourhood",
+            "type": "nominal",
+            "title": "Area"
+          },
+          {
+            "field": "room_type",
+            "type": "nominal",
+            "title": "Room type"
+          },
+          {
+            "field": "price",
+            "type": "quantitative",
+            "title": "Price per night",
+            "format": "$,.0f"
+          }
         ]
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "label": "Port Phillip Bay",
+            "lon": 144.82,
+            "lat": -38.12
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "fontSize": 14,
+        "fontStyle": "italic",
+        "color": "#00849e"
+      },
+      "encoding": {
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "label",
+          "type": "nominal"
+        }
       }
     }
   ]

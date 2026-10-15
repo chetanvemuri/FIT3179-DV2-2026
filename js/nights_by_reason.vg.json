@@ -7,11 +7,27 @@
   },
   "width": 600,
   "height": 200,
-  "data": {"url": "data/nights_by_reason.csv"},
+  "data": {
+    "url": "data/nights_by_reason.csv"
+  },
   "transform": [
-    {"calculate": "datum.nights / 1000000", "as": "nights_m"},
-    {"joinaggregate": [{"op": "sum", "field": "nights", "as": "total"}]},
-    {"calculate": "datum.nights / datum.total", "as": "share"}
+    {
+      "calculate": "datum.nights / 1000000",
+      "as": "nights_m"
+    },
+    {
+      "joinaggregate": [
+        {
+          "op": "sum",
+          "field": "nights",
+          "as": "total"
+        }
+      ]
+    },
+    {
+      "calculate": "datum.nights / datum.total",
+      "as": "share"
+    }
   ],
   "encoding": {
     "y": {
@@ -19,7 +35,12 @@
       "type": "nominal",
       "sort": "-x",
       "title": null,
-      "axis": {"ticks": false, "domain": false, "labelFontSize": 12, "labelLimit": 260}
+      "axis": {
+        "ticks": false,
+        "domain": false,
+        "labelFontSize": 12,
+        "labelLimit": 260
+      }
     },
     "x": {
       "field": "nights_m",
@@ -29,25 +50,59 @@
   },
   "layer": [
     {
-      "mark": {"type": "bar", "cornerRadiusEnd": 2},
+      "mark": {
+        "type": "bar",
+        "cornerRadiusEnd": 4
+      },
       "encoding": {
         "color": {
-          "condition": {"test": "datum.reason === 'Visiting friends and relatives'", "value": "#17bebb"},
-          "value": "#c8c8c8"
+          "condition": {
+            "test": "datum.reason === 'Visiting friends and relatives'",
+            "value": "#dc5d36"
+          },
+          "value": "#d9d1c4"
         },
         "tooltip": [
-          {"field": "reason", "type": "nominal", "title": "Reason"},
-          {"field": "nights_m", "type": "quantitative", "title": "Nights (millions)", "format": ".1f"},
-          {"field": "share", "type": "quantitative", "title": "Share of all nights", "format": ".0%"}
+          {
+            "field": "reason",
+            "type": "nominal",
+            "title": "Reason"
+          },
+          {
+            "field": "nights_m",
+            "type": "quantitative",
+            "title": "Nights (millions)",
+            "format": ".1f"
+          },
+          {
+            "field": "share",
+            "type": "quantitative",
+            "title": "Share of all nights",
+            "format": ".0%"
+          }
         ]
       }
     },
     {
-      "mark": {"type": "text", "align": "left", "dx": 4, "fontSize": 11, "color": "#555"},
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 4,
+        "fontSize": 11,
+        "color": "#5b6770"
+      },
       "encoding": {
-        "text": {"field": "nights_m", "type": "quantitative", "format": ".1f"}
+        "text": {
+          "field": "nights_m",
+          "type": "quantitative",
+          "format": ".1f"
+        }
       }
     }
   ],
-  "config": {"view": {"stroke": null}}
+  "config": {
+    "view": {
+      "stroke": null
+    }
+  }
 }

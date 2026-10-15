@@ -4,117 +4,403 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Where Australia Stays</title>
-  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+  <script src="js/theme.js"></script>
   <style>
+    :root {
+      --sand: #fbf8f3;
+      --card: #ffffff;
+      --line: #e6dfd3;
+      --ink: #1d2a30;
+      --ink-2: #4a5860;
+      --ink-3: #7b858b;
+      --ocean: #00849e;
+      --ocean-deep: #0d3b45;
+      --terracotta: #dc5d36;
+      --serif: "Fraunces", Georgia, serif;
+      --sans: "Work Sans", system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
     body {
-      font-family: "Inter", sans-serif;
-      color: #222;
-      background: #fafaf7;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 32px 16px;
+      margin: 0;
+      background: var(--sand);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 17px;
+      line-height: 1.65;
+    }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      background: var(--ocean-deep);
+      color: #f4efe6;
+      padding: 72px 16px 56px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      /* a soft horizon of sand and sea */
+      content: "";
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--ocean) 0 60%, var(--terracotta) 60% 100%);
+    }
+    .hero-inner { max-width: 880px; margin: 0 auto; }
+    .kicker {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #8fd3df;
+      margin: 0 0 16px;
+    }
+    h1 {
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: clamp(2.6rem, 6vw, 4.2rem);
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+      margin: 0 0 20px;
+    }
+    h1 em { font-style: italic; font-weight: 400; color: #f3b49c; }
+    .dek {
+      font-size: 1.2rem;
+      line-height: 1.55;
+      color: #d9e4e4;
+      max-width: 640px;
+      margin: 0 0 28px;
+    }
+    .byline { font-size: 0.9rem; color: #a9bcbf; margin: 0; }
+
+    /* ---------- At a glance ---------- */
+    .glance {
+      max-width: 880px;
+      margin: -28px auto 0;
+      padding: 0 16px;
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .stat {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px 20px;
+      box-shadow: 0 6px 18px rgba(13, 59, 69, 0.07);
+    }
+    .stat-num {
+      font-family: var(--serif);
+      font-size: 2rem;
+      font-weight: 600;
+      line-height: 1.1;
+      color: var(--ocean);
+    }
+    .stat-label { font-size: 0.88rem; color: var(--ink-2); line-height: 1.4; margin-top: 6px; }
+
+    /* ---------- Story ---------- */
+    main { max-width: 880px; margin: 0 auto; padding: 24px 16px 0; }
+
+    .intro {
+      font-size: 1.15rem;
+      color: var(--ink-2);
+      max-width: 680px;
+      margin: 40px 0 8px;
+    }
+
+    .chapter { margin-top: 72px; }
+    .chapter-label {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      border-top: 2px solid var(--ink);
+      padding-top: 14px;
+      margin: 0 0 6px;
+    }
+    .chapter-label span { font-family: var(--serif); font-size: 1.6rem; letter-spacing: 0; color: var(--ink); }
+    .chapter-title {
+      font-family: var(--serif);
+      font-size: clamp(1.9rem, 4vw, 2.5rem);
+      font-weight: 600;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      margin: 0 0 8px;
+    }
+
+    section.story { margin-top: 44px; }
+    h3 {
+      font-family: var(--serif);
+      font-size: 1.45rem;
+      font-weight: 600;
+      line-height: 1.25;
+      margin: 0 0 10px;
+    }
+    .story p { max-width: 680px; margin: 0 0 18px; color: var(--ink-2); }
+    .story p strong { color: var(--ink); font-weight: 600; }
+    .hl-ocean { color: var(--ocean); font-weight: 600; }
+    .hl-terra { color: var(--terracotta); font-weight: 600; }
+
+    .placeholder {
+      background: #fff4d6;
+      border-left: 4px solid #e2b33d;
+      padding: 10px 14px;
+      border-radius: 6px;
+      color: #6b5400 !important;
+      font-size: 0.95rem;
+    }
+
+    .chart-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 24px 24px 18px;
+      margin: 8px 0 0;
+      box-shadow: 0 6px 22px rgba(13, 59, 69, 0.06);
+      overflow-x: auto;
+    }
+    .chart-note {
+      font-size: 0.82rem;
+      color: var(--ink-3);
+      margin: 10px 2px 0;
+      line-height: 1.5;
+    }
+
+    /* Vega tooltip */
+    #vg-tooltip-element {
+      font-family: var(--sans) !important;
+      font-size: 13px !important;
+      border-radius: 8px !important;
+      border: 1px solid var(--line) !important;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.12) !important;
+    }
+
+    /* ---------- Footer ---------- */
+    footer {
+      margin-top: 96px;
+      background: var(--ocean-deep);
+      color: #c9d6d8;
+      padding: 48px 16px 56px;
+      font-size: 0.9rem;
       line-height: 1.6;
     }
-    h1, h2 { font-family: "Source Serif 4", serif; }
-    h1 { font-size: 2.4rem; margin-bottom: 0; }
-    .byline { color: #777; font-size: 0.9rem; }
-    .chart { margin: 24px 0; }
-    footer { margin-top: 48px; font-size: 0.85rem; color: #777; }
+    .footer-inner { max-width: 880px; margin: 0 auto; }
+    footer h4 {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #f4efe6;
+      margin: 0 0 12px;
+    }
+    footer ol { padding-left: 20px; margin: 0 0 32px; }
+    footer li { margin-bottom: 8px; }
+    footer a { color: #8fd3df; }
+    footer .small { color: #8fa4a8; font-size: 0.82rem; }
+
+    @media (max-width: 640px) {
+      body { font-size: 16px; }
+      .hero { padding: 48px 16px 48px; }
+      .glance { grid-template-columns: 1fr; }
+      .chart-card { padding: 16px 12px 12px; }
+    }
   </style>
 </head>
 <body>
-  <h1>Where Australia Stays</h1>
-  <p class="byline">By [Your Name] · October 2026</p>
 
-  <h2>The Airbnb boom in Melbourne</h2>
-  <p>
-    [Draft text: one or two sentences on what the map shows, e.g. where
-    listings cluster and how many are entire homes rather than spare rooms.]
-  </p>
-  <div id="airbnb_map" class="chart"></div>
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="kicker">A data story about Australian tourism</p>
+      <h1>Where Australia <em>stays</em></h1>
+      <p class="dek">
+        Who is travelling, when they come, what they spend and where they sleep:
+        a look at Australia's accommodation industry in 2026, from Melbourne's
+        Airbnbs to city hotels.
+      </p>
+      <p class="byline">By [Your Name] &middot; October 2026</p>
+    </div>
+  </header>
 
-  <h2>Why Australians travel</h2>
-  <p>
-    Australians spent 89 million nights away from home on overnight trips in
-    the June quarter of 2026. Holidays made up the largest share, but almost
-    4 in 10 nights were spent visiting friends and relatives, often sleeping
-    in a spare room rather than paying for a bed.
-  </p>
-  <div id="nights_by_reason" class="chart"></div>
+  <div class="glance">
+    <div class="stat">
+      <div class="stat-num">89M</div>
+      <div class="stat-label">nights Australians spent away from home in the June quarter 2026</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">711K</div>
+      <div class="stat-label">overseas visitors arrived in July 2026, still 10% below July 2019</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">$21.8B</div>
+      <div class="stat-label">spent by tourists on paid accommodation in 2024&ndash;25</div>
+    </div>
+  </div>
 
-  <h2>The visitors still missing</h2>
-  <p>
-    About 711,000 overseas visitors arrived in Australia in July 2026. That is
-    still 10% fewer than in July 2019, before COVID closed the borders. The gap
-    is not the same everywhere: Western Australia, New South Wales and
-    Queensland are above 90% of their old numbers, while Tasmania, the
-    Northern Territory and the ACT have recovered only around three quarters.
-  </p>
-  <div id="intl_visitors_map" class="chart"></div>
+  <main>
 
-  <h2>When visitors come</h2>
-  <p>
-    For most of Australia, overseas visitors arrive in summer. December and
-    February are the busiest months almost everywhere, and Tasmania gets
-    nearly twice its usual number in February. The Northern Territory runs
-    the other way: its dry winter is peak season, with July about 40% busier
-    than usual, while December is its quietest month.
-  </p>
-  <div id="seasons_heatmap" class="chart"></div>
+    <p class="intro">
+      Every night, hundreds of thousands of people across Australia sleep
+      somewhere other than home: a hotel in the city, a caravan by the beach,
+      a friend's spare room. This page follows those nights to see how the
+      way we travel is shaping the places we stay.
+    </p>
 
-  <h2>Where our visitors come from</h2>
-  <p>
-    In July 2019, China sent more visitors to Australia than any other
-    country. In July 2026, New Zealand took the top spot with about 134,000
-    visitors, while visitors from China fell by around a fifth to 117,000.
-  </p>
-  <div id="top_countries" class="chart"></div>
+    <!-- ================= Chapter 1 ================= -->
+    <div class="chapter">
+      <p class="chapter-label"><span>01</span> How we travel</p>
+      <h2 class="chapter-title">Australians on the move</h2>
+    </div>
 
-  <h2>Where the tourist dollar goes</h2>
-  <p>
-    In 2024–25, tourists in Australia spent $21.8 billion on paid
-    accommodation. That is less than they spent on
-    takeaway and restaurant meals, flights, groceries or fuel. Holiday homes
-    add another $15.6 billion, which includes the rent owners would have paid
-    to stay in their own holiday house.
-  </p>
-  <div id="tourism_spend" class="chart"></div>
+    <section class="story">
+      <h3>Why Australians travel</h3>
+      <p>
+        Australians spent <strong>89 million nights</strong> away from home on
+        overnight trips in the June quarter of 2026. Holidays made up the
+        largest share, but almost <span class="hl-terra">4 in 10 nights</span>
+        were spent visiting friends and relatives, often sleeping in a spare
+        room rather than paying for a bed.
+      </p>
+      <div class="chart-card"><div id="nights_by_reason"></div></div>
+    </section>
 
-  <h2>A good year for city hotels</h2>
-  <p>
-    Fewer international visitors has not meant a bad year for hotels. In the
-    first half of 2026, hotels in nine of Australia's ten biggest hotel
-    markets earned more per room than a year earlier, led by the Sunshine
-    Coast at more than 10%. Canberra was the only market to slip, and only
-    just.
-  </p>
-  <div id="hotel_revpar" class="chart"></div>
+    <section class="story">
+      <h3>Where the tourist dollar goes</h3>
+      <p>
+        In 2024&ndash;25, tourists in Australia spent
+        <span class="hl-terra">$21.8 billion</span> on paid accommodation.
+        That is less than they spent on takeaway and restaurant meals, flights,
+        groceries or fuel. Holiday homes add another $15.6 billion, which
+        includes the rent owners would have paid to stay in their own holiday
+        house.
+      </p>
+      <div class="chart-card"><div id="tourism_spend"></div></div>
+    </section>
+
+    <!-- ================= Chapter 2 ================= -->
+    <div class="chapter">
+      <p class="chapter-label"><span>02</span> Visitors from overseas</p>
+      <h2 class="chapter-title">The world comes back, slowly</h2>
+    </div>
+
+    <section class="story">
+      <h3>The visitors still missing</h3>
+      <p>
+        About <strong>711,000</strong> overseas visitors arrived in Australia
+        in July 2026. That is still 10% fewer than in July 2019, before COVID
+        closed the borders. The gap is not the same everywhere: Western
+        Australia, New South Wales and Queensland are above 90% of their old
+        numbers, while Tasmania, the Northern Territory and the ACT have
+        recovered only around three quarters.
+      </p>
+      <div class="chart-card"><div id="intl_visitors_map"></div></div>
+      <p class="chart-note">July is winter, which favours warmer northern states. Hover over a state for visitor numbers.</p>
+    </section>
+
+    <section class="story">
+      <h3>When visitors come</h3>
+      <p>
+        For most of Australia, overseas visitors arrive in summer. December and
+        February are the busiest months almost everywhere, and Tasmania gets
+        nearly twice its usual number in February. The
+        <span class="hl-ocean">Northern Territory</span> runs the other way:
+        its dry winter is peak season, with July about 40% busier than usual,
+        while December is its quietest month.
+      </p>
+      <div class="chart-card"><div id="seasons_heatmap"></div></div>
+    </section>
+
+    <section class="story">
+      <h3>Where our visitors come from</h3>
+      <p>
+        In July 2019, China sent more visitors to Australia than any other
+        country. In July 2026, <span class="hl-terra">New Zealand</span> took
+        the top spot with about 134,000 visitors, while visitors from China fell
+        by around a fifth to 117,000.
+      </p>
+      <div class="chart-card"><div id="top_countries"></div></div>
+    </section>
+
+    <!-- ================= Chapter 3 ================= -->
+    <div class="chapter">
+      <p class="chapter-label"><span>03</span> Where we stay</p>
+      <h2 class="chapter-title">Hotels, homes and everything between</h2>
+    </div>
+
+    <section class="story">
+      <h3>The Airbnb boom in Melbourne</h3>
+      <p class="placeholder">
+        [Draft text: one or two sentences on what the map shows, e.g. where
+        listings cluster and how many are entire homes rather than spare rooms.]
+      </p>
+      <div class="chart-card"><div id="airbnb_map"></div></div>
+    </section>
+
+    <section class="story">
+      <h3>A good year for city hotels</h3>
+      <p>
+        Fewer international visitors has not meant a bad year for hotels. In
+        the first half of 2026, hotels in nine of Australia's ten biggest hotel
+        markets earned more per room than a year earlier, led by the
+        <span class="hl-ocean">Sunshine Coast</span> at more than 10%.
+        <span class="hl-terra">Canberra</span> was the only market to slip,
+        and only just.
+      </p>
+      <div class="chart-card"><div id="hotel_revpar"></div></div>
+    </section>
+
+  </main>
 
   <footer>
-    Data: Inside Airbnb, Melbourne listings (insideairbnb.com), [date of snapshot].<br>
-    Tourism Research Australia, Domestic Tourism Statistics, overnight trips by
-    main reason, June quarter 2026 (tra.gov.au).<br>
-    Australian Bureau of Statistics, Overseas Arrivals and Departures,
-    short-term visitor arrivals by state or territory of stay and by country
-    of residence, monthly releases August 2025 to July 2026 (abs.gov.au).<br>
-    State boundaries: ABS, via github.com/rowanhogan/australian-states.<br>
-    Australian Bureau of Statistics, Australian National Accounts: Tourism
-    Satellite Account, 2024–25 (abs.gov.au).<br>
-    Horwath HTL, Australia Key Markets Hotel Market Outlook, Q2 2026
-    (hotel data from STR), horwathhtl.com.
+    <div class="footer-inner">
+      <h4>Data sources</h4>
+      <ol>
+        <li>Inside Airbnb, Melbourne listings and neighbourhood boundaries, [date of snapshot].
+          <a href="https://insideairbnb.com/get-the-data/">insideairbnb.com</a></li>
+        <li>Tourism Research Australia, Domestic Tourism Statistics, overnight trips by main reason, June quarter 2026.
+          <a href="https://www.tra.gov.au/en/domestic/domestic-tourism-results">tra.gov.au</a></li>
+        <li>Australian Bureau of Statistics, Overseas Arrivals and Departures, Australia: short-term visitor arrivals by state or territory of stay and by country of residence, monthly releases August 2025 to July 2026.
+          <a href="https://www.abs.gov.au/statistics/industry/tourism-and-transport/overseas-arrivals-and-departures-australia/jul-2026">abs.gov.au</a></li>
+        <li>Australian Bureau of Statistics, Australian National Accounts: Tourism Satellite Account, 2024&ndash;25.
+          <a href="https://www.abs.gov.au/statistics/economy/national-accounts/australian-national-accounts-tourism-satellite-account/latest-release">abs.gov.au</a></li>
+        <li>Horwath HTL, Australia Key Markets Hotel Market Outlook, June quarter 2026 (hotel data from STR).
+          <a href="https://horwathhtl.com/wp-content/uploads/2026/09/Horwath-HTL-Jun26-Quarterly-Hotel-Market-Outlook-F260908-1.pdf">horwathhtl.com</a></li>
+        <li>Australian state boundaries, based on ABS data.
+          <a href="https://github.com/rowanhogan/australian-states">github.com/rowanhogan/australian-states</a></li>
+      </ol>
+
+      <h4>About this page</h4>
+      <p>
+        Created by [Your Name] for FIT3179 Data Visualisation, Monash University, October 2026.
+        Charts built with <a href="https://vega.github.io/vega-lite/">Vega-Lite</a>.
+        Fonts: Fraunces and Work Sans (Google Fonts).
+      </p>
+      <p class="small">
+        AI acknowledgement: [Describe how you used generative AI tools in this project.]
+      </p>
+    </div>
   </footer>
 
   <script>
-    vegaEmbed("#airbnb_map", "js/airbnb_map.vg.json", {actions: false});
-    vegaEmbed("#nights_by_reason", "js/nights_by_reason.vg.json", {actions: false});
-    vegaEmbed("#intl_visitors_map", "js/intl_visitors_choropleth.vg.json", {actions: false});
-    vegaEmbed("#seasons_heatmap", "js/seasons_heatmap.vg.json", {actions: false});
-    vegaEmbed("#top_countries", "js/top_countries.vg.json", {actions: false});
-    vegaEmbed("#tourism_spend", "js/tourism_spend_dotplot.vg.json", {actions: false});
-    vegaEmbed("#hotel_revpar", "js/hotel_revpar_lollipop.vg.json", {actions: false});
+    const opts = {actions: false, renderer: "svg", config: THEME};
+    vegaEmbed("#nights_by_reason", "js/nights_by_reason.vg.json", opts);
+    vegaEmbed("#tourism_spend", "js/tourism_spend_dotplot.vg.json", opts);
+    vegaEmbed("#intl_visitors_map", "js/intl_visitors_choropleth.vg.json", opts);
+    vegaEmbed("#seasons_heatmap", "js/seasons_heatmap.vg.json", opts);
+    vegaEmbed("#top_countries", "js/top_countries.vg.json", opts);
+    vegaEmbed("#airbnb_map", "js/airbnb_map.vg.json", opts);
+    vegaEmbed("#hotel_revpar", "js/hotel_revpar_lollipop.vg.json", opts);
   </script>
 </body>
 </html>

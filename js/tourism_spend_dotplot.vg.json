@@ -2,7 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": {
     "text": "Tourists spend more on meals than on a bed",
-    "subtitle": "What tourists in Australia spent their money on, 2024\u201325 ($ billion)",
+    "subtitle": "What tourists in Australia spent their money on, 2024–25 ($ billion)",
     "anchor": "start"
   },
   "width": 520,
@@ -22,7 +22,7 @@
         "labelFontSize": 12,
         "labelLimit": 400,
         "grid": true,
-        "gridColor": "#eeeeee"
+        "gridColor": "#ece6dc"
       }
     },
     "x": {
@@ -55,9 +55,9 @@
         "color": {
           "condition": {
             "test": "datum.product === 'Accommodation services'",
-            "value": "#e4572e"
+            "value": "#dc5d36"
           },
-          "value": "#6a51a3"
+          "value": "#00849e"
         },
         "tooltip": [
           {
@@ -80,7 +80,7 @@
         "align": "left",
         "dx": 9,
         "fontSize": 11,
-        "color": "#555"
+        "color": "#5b6770"
       },
       "encoding": {
         "text": {

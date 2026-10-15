@@ -3,7 +3,7 @@
   "title": {
     "text": "Hotels in nine of ten cities are earning more per room",
     "subtitle": [
-      "Change in hotel income per available room, Jan\u2013Jun 2026 vs Jan\u2013Jun 2025.",
+      "Change in hotel income per available room, Jan–Jun 2026 vs Jan–Jun 2025.",
       "This measure counts empty rooms too, so it rises when hotels fill more",
       "rooms or charge more per night."
     ],
@@ -59,7 +59,7 @@
             "grid": false,
             "domain": false,
             "title": null,
-            "labelColor": "#777"
+            "labelColor": "#5b6770"
           },
           "field": "zero"
         },
@@ -75,8 +75,8 @@
               "Fell"
             ],
             "range": [
-              "#b6a9d6",
-              "#f1a58f"
+              "#9fd0da",
+              "#f0b29d"
             ]
           },
           "legend": null
@@ -103,8 +103,8 @@
               "Fell"
             ],
             "range": [
-              "#6a51a3",
-              "#e4572e"
+              "#00849e",
+              "#dc5d36"
             ]
           },
           "legend": null
@@ -135,7 +135,7 @@
         "align": "left",
         "dx": 10,
         "fontSize": 11,
-        "color": "#555"
+        "color": "#5b6770"
       },
       "encoding": {
         "x": {
@@ -160,7 +160,7 @@
         "align": "right",
         "dx": -10,
         "fontSize": 11,
-        "color": "#c43d1a"
+        "color": "#b23f1b"
       },
       "encoding": {
         "x": {
@@ -184,7 +184,7 @@
       },
       "mark": {
         "type": "rule",
-        "color": "#999",
+        "color": "#a39a8c",
         "strokeDash": [
           3,
           3

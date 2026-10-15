@@ -12,57 +12,151 @@
   "height": 480,
   "projection": {
     "type": "conicEqualArea",
-    "parallels": [-18, -36],
-    "rotate": [-134, 0]
+    "parallels": [
+      -18,
+      -36
+    ],
+    "rotate": [
+      -134,
+      0
+    ]
   },
   "layer": [
     {
       "data": {
         "url": "data/au_states.topojson",
-        "format": {"type": "topojson", "feature": "states"}
+        "format": {
+          "type": "topojson",
+          "feature": "states"
+        }
       },
       "transform": [
         {
           "lookup": "properties.STATE_NAME",
           "from": {
-            "data": {"url": "data/intl_visitors_by_state.csv"},
+            "data": {
+              "url": "data/intl_visitors_by_state.csv"
+            },
             "key": "state",
-            "fields": ["jul_2019", "jul_2025", "jul_2026"]
+            "fields": [
+              "jul_2019",
+              "jul_2025",
+              "jul_2026"
+            ]
           }
         },
-        {"calculate": "datum.jul_2026 / datum.jul_2019", "as": "recovery"},
-        {"calculate": "(datum.jul_2026 - datum.jul_2025) / datum.jul_2025", "as": "change_1yr"}
+        {
+          "calculate": "datum.jul_2026 / datum.jul_2019",
+          "as": "recovery"
+        },
+        {
+          "calculate": "(datum.jul_2026 - datum.jul_2025) / datum.jul_2025",
+          "as": "change_1yr"
+        }
       ],
-      "mark": {"type": "geoshape", "stroke": "white", "strokeWidth": 1.5},
+      "mark": {
+        "type": "geoshape",
+        "stroke": "#ffffff",
+        "strokeWidth": 1.5
+      },
       "encoding": {
         "color": {
           "field": "recovery",
           "type": "quantitative",
           "title": "Share of 2019 level",
-          "scale": {"scheme": "purples", "domain": [0.7, 1], "clamp": true},
-          "legend": {"format": ".0%", "orient": "bottom-left", "direction": "horizontal", "gradientLength": 200, "titleLimit": 250}
+          "scale": {
+            "range": [
+              "#e3f1f3",
+              "#0a5f70"
+            ],
+            "domain": [
+              0.7,
+              1
+            ],
+            "clamp": true
+          },
+          "legend": {
+            "format": ".0%",
+            "orient": "bottom-left",
+            "direction": "horizontal",
+            "gradientLength": 200,
+            "titleLimit": 250
+          }
         },
         "tooltip": [
-          {"field": "properties.STATE_NAME", "type": "nominal", "title": "State"},
-          {"field": "jul_2026", "type": "quantitative", "title": "Visitors, July 2026", "format": ","},
-          {"field": "jul_2019", "type": "quantitative", "title": "Visitors, July 2019", "format": ","},
-          {"field": "recovery", "type": "quantitative", "title": "Share of 2019 level", "format": ".0%"},
-          {"field": "change_1yr", "type": "quantitative", "title": "Change since July 2025", "format": "+.1%"}
+          {
+            "field": "properties.STATE_NAME",
+            "type": "nominal",
+            "title": "State"
+          },
+          {
+            "field": "jul_2026",
+            "type": "quantitative",
+            "title": "Visitors, July 2026",
+            "format": ","
+          },
+          {
+            "field": "jul_2019",
+            "type": "quantitative",
+            "title": "Visitors, July 2019",
+            "format": ","
+          },
+          {
+            "field": "recovery",
+            "type": "quantitative",
+            "title": "Share of 2019 level",
+            "format": ".0%"
+          },
+          {
+            "field": "change_1yr",
+            "type": "quantitative",
+            "title": "Change since July 2025",
+            "format": "+.1%"
+          }
         ]
       }
     },
     {
-      "data": {"url": "data/intl_visitors_by_state.csv"},
+      "data": {
+        "url": "data/intl_visitors_by_state.csv"
+      },
       "transform": [
-        {"calculate": "datum.abbr + ' ' + format(datum.jul_2026 / datum.jul_2019, '.0%')", "as": "label"}
+        {
+          "calculate": "datum.abbr + ' ' + format(datum.jul_2026 / datum.jul_2019, '.0%')",
+          "as": "label"
+        }
       ],
-      "mark": {"type": "text", "fontSize": 12, "fontWeight": "bold", "color": "#2b2b2b"},
+      "mark": {
+        "type": "text",
+        "fontSize": 12,
+        "fontWeight": "bold"
+      },
       "encoding": {
-        "longitude": {"field": "label_lon", "type": "quantitative"},
-        "latitude": {"field": "label_lat", "type": "quantitative"},
-        "text": {"field": "label", "type": "nominal"}
+        "longitude": {
+          "field": "label_lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "label_lat",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "label",
+          "type": "nominal"
+        },
+        "color": {
+          "condition": {
+            "test": "datum.jul_2026 / datum.jul_2019 > 0.85",
+            "value": "#ffffff"
+          },
+          "value": "#1d2a30"
+        }
       }
     }
   ],
-  "config": {"view": {"stroke": null}}
+  "config": {
+    "view": {
+      "stroke": null
+    }
+  }
 }

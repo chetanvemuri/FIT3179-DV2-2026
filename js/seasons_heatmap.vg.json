@@ -5,7 +5,7 @@
     "subtitle": [
       "Overseas visitors arriving each month (Aug 2025 to Jul 2026), compared",
       "with each state's own monthly average. Orange = busier than usual,",
-      "blue = quieter. Hover over a square for the numbers."
+      "teal = quieter. Hover over a square for the numbers."
     ],
     "anchor": "start"
   },
@@ -77,11 +77,15 @@
             "type": "quantitative",
             "title": "Vs state's monthly average",
             "scale": {
-              "scheme": "blueorange",
-              "domainMid": 1,
               "domain": [
                 0.5,
+                1,
                 1.5
+              ],
+              "range": [
+                "#0a6f84",
+                "#f1ede6",
+                "#c4471f"
               ],
               "clamp": true
             },
@@ -143,7 +147,7 @@
               "test": "datum.vs_avg > 1.35 || datum.vs_avg < 0.65",
               "value": "white"
             },
-            "value": "#333"
+            "value": "#1d2a30"
           }
         }
       }
