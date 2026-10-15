@@ -55,6 +55,16 @@
   </p>
   <div id="intl_visitors_map" class="chart"></div>
 
+  <h2>When visitors come</h2>
+  <p>
+    For most of Australia, overseas visitors arrive in summer. December and
+    February are the busiest months almost everywhere, and Tasmania gets
+    nearly twice its usual number in February. The Northern Territory runs
+    the other way: its dry winter is peak season, with July about 40% busier
+    than usual, while December is its quietest month.
+  </p>
+  <div id="seasons_heatmap" class="chart"></div>
+
   <h2>Where our visitors come from</h2>
   <p>
     In July 2019, China sent more visitors to Australia than any other
@@ -89,7 +99,7 @@
     main reason, June quarter 2026 (tra.gov.au).<br>
     Australian Bureau of Statistics, Overseas Arrivals and Departures,
     short-term visitor arrivals by state or territory of stay and by country
-    of residence, July 2026 (abs.gov.au).<br>
+    of residence, monthly releases August 2025 to July 2026 (abs.gov.au).<br>
     State boundaries: ABS, via github.com/rowanhogan/australian-states.<br>
     Australian Bureau of Statistics, Australian National Accounts: Tourism
     Satellite Account, 2024–25 (abs.gov.au).<br>
@@ -101,6 +111,7 @@
     vegaEmbed("#airbnb_map", "js/airbnb_map.vg.json", {actions: false});
     vegaEmbed("#nights_by_reason", "js/nights_by_reason.vg.json", {actions: false});
     vegaEmbed("#intl_visitors_map", "js/intl_visitors_choropleth.vg.json", {actions: false});
+    vegaEmbed("#seasons_heatmap", "js/seasons_heatmap.vg.json", {actions: false});
     vegaEmbed("#top_countries", "js/top_countries.vg.json", {actions: false});
     vegaEmbed("#tourism_spend", "js/tourism_spend_dotplot.vg.json", {actions: false});
     vegaEmbed("#hotel_revpar", "js/hotel_revpar_lollipop.vg.json", {actions: false});

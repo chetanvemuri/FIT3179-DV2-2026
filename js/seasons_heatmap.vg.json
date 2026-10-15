@@ -1,0 +1,200 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Summer is peak season everywhere except the Top End",
+    "subtitle": [
+      "Overseas visitors arriving each month (Aug 2025 to Jul 2026), compared",
+      "with each state's own monthly average. Orange = busier than usual,",
+      "blue = quieter. Hover over a square for the numbers."
+    ],
+    "anchor": "start"
+  },
+  "data": {
+    "url": "data/visitors_by_state_month.csv"
+  },
+  "transform": [
+    {
+      "calculate": "toDate(datum.month + '-01T00:00:00')",
+      "as": "date"
+    },
+    {
+      "joinaggregate": [
+        {
+          "op": "mean",
+          "field": "visitors",
+          "as": "state_avg"
+        }
+      ],
+      "groupby": [
+        "state"
+      ]
+    },
+    {
+      "calculate": "datum.visitors / datum.state_avg",
+      "as": "vs_avg"
+    },
+    {
+      "calculate": "indexof(['Summer','Autumn','Winter','Spring'], datum.season)",
+      "as": "season_order"
+    },
+    {
+      "calculate": "(month(datum.date) + 1) % 12",
+      "as": "month_order"
+    }
+  ],
+  "facet": {
+    "column": {
+      "field": "season",
+      "type": "nominal",
+      "sort": [
+        "Summer",
+        "Autumn",
+        "Winter",
+        "Spring"
+      ],
+      "title": null,
+      "header": {
+        "labelFontSize": 13,
+        "labelFontWeight": "bold",
+        "labelOrient": "top"
+      }
+    }
+  },
+  "spacing": 6,
+  "spec": {
+    "width": 120,
+    "height": 260,
+    "layer": [
+      {
+        "mark": {
+          "type": "rect",
+          "stroke": "white",
+          "strokeWidth": 1.5
+        },
+        "encoding": {
+          "color": {
+            "field": "vs_avg",
+            "type": "quantitative",
+            "title": "Vs state's monthly average",
+            "scale": {
+              "scheme": "blueorange",
+              "domainMid": 1,
+              "domain": [
+                0.5,
+                1.5
+              ],
+              "clamp": true
+            },
+            "legend": {
+              "format": ".0%",
+              "orient": "bottom",
+              "direction": "horizontal",
+              "gradientLength": 260,
+              "titleLimit": 300,
+              "values": [
+                0.5,
+                0.75,
+                1,
+                1.25,
+                1.5
+              ]
+            }
+          },
+          "tooltip": [
+            {
+              "field": "state",
+              "type": "nominal",
+              "title": "State"
+            },
+            {
+              "field": "date",
+              "type": "temporal",
+              "title": "Month",
+              "format": "%B %Y"
+            },
+            {
+              "field": "visitors",
+              "type": "quantitative",
+              "title": "Overseas visitors",
+              "format": ","
+            },
+            {
+              "field": "vs_avg",
+              "type": "quantitative",
+              "title": "Vs state's monthly average",
+              "format": ".0%"
+            }
+          ]
+        }
+      },
+      {
+        "mark": {
+          "type": "text",
+          "fontSize": 10
+        },
+        "encoding": {
+          "text": {
+            "field": "vs_avg",
+            "type": "quantitative",
+            "format": ".0%"
+          },
+          "color": {
+            "condition": {
+              "test": "datum.vs_avg > 1.35 || datum.vs_avg < 0.65",
+              "value": "white"
+            },
+            "value": "#333"
+          }
+        }
+      }
+    ],
+    "encoding": {
+      "x": {
+        "field": "date",
+        "type": "ordinal",
+        "timeUnit": "month",
+        "sort": {
+          "field": "month_order"
+        },
+        "title": null,
+        "axis": {
+          "format": "%b",
+          "labelAngle": 0,
+          "ticks": false,
+          "domain": false,
+          "orient": "bottom"
+        }
+      },
+      "y": {
+        "field": "state",
+        "type": "nominal",
+        "title": null,
+        "sort": [
+          "New South Wales",
+          "Victoria",
+          "Queensland",
+          "Western Australia",
+          "South Australia",
+          "Tasmania",
+          "ACT",
+          "Northern Territory"
+        ],
+        "axis": {
+          "ticks": false,
+          "domain": false,
+          "labelFontSize": 12
+        }
+      }
+    }
+  },
+  "resolve": {
+    "scale": {
+      "x": "independent"
+    }
+  },
+  "config": {
+    "view": {
+      "stroke": null
+    }
+  }
+}
