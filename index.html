@@ -73,6 +73,16 @@
   </p>
   <div id="tourism_spend" class="chart"></div>
 
+  <h2>A good year for city hotels</h2>
+  <p>
+    Fewer international visitors has not meant a bad year for hotels. In the
+    first half of 2026, hotels in nine of Australia's ten biggest hotel
+    markets earned more per room than a year earlier, led by the Sunshine
+    Coast at more than 10%. Canberra was the only market to slip, and only
+    just.
+  </p>
+  <div id="hotel_revpar" class="chart"></div>
+
   <footer>
     Data: Inside Airbnb, Melbourne listings (insideairbnb.com), [date of snapshot].<br>
     Tourism Research Australia, Domestic Tourism Statistics, overnight trips by
@@ -82,7 +92,9 @@
     of residence, July 2026 (abs.gov.au).<br>
     State boundaries: ABS, via github.com/rowanhogan/australian-states.<br>
     Australian Bureau of Statistics, Australian National Accounts: Tourism
-    Satellite Account, 2024–25 (abs.gov.au).
+    Satellite Account, 2024–25 (abs.gov.au).<br>
+    Horwath HTL, Australia Key Markets Hotel Market Outlook, Q2 2026
+    (hotel data from STR), horwathhtl.com.
   </footer>
 
   <script>
@@ -91,6 +103,7 @@
     vegaEmbed("#intl_visitors_map", "js/intl_visitors_choropleth.vg.json", {actions: false});
     vegaEmbed("#top_countries", "js/top_countries.vg.json", {actions: false});
     vegaEmbed("#tourism_spend", "js/tourism_spend_dotplot.vg.json", {actions: false});
+    vegaEmbed("#hotel_revpar", "js/hotel_revpar_lollipop.vg.json", {actions: false});
   </script>
 </body>
 </html>

@@ -1,0 +1,212 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Hotels in nine of ten cities are earning more per room",
+    "subtitle": [
+      "Change in hotel income per available room, Jan\u2013Jun 2026 vs Jan\u2013Jun 2025.",
+      "This measure counts empty rooms too, so it rises when hotels fill more",
+      "rooms or charge more per night."
+    ],
+    "anchor": "start"
+  },
+  "width": 560,
+  "height": 320,
+  "data": {
+    "url": "data/hotel_revpar_growth.csv"
+  },
+  "transform": [
+    {
+      "calculate": "datum.revpar_change < 0 ? 'Fell' : 'Rose'",
+      "as": "direction"
+    },
+    {
+      "calculate": "0",
+      "as": "zero"
+    }
+  ],
+  "encoding": {
+    "y": {
+      "field": "city",
+      "type": "nominal",
+      "sort": null,
+      "title": null,
+      "axis": {
+        "ticks": false,
+        "domain": false,
+        "labelFontSize": 12,
+        "labelPadding": 8
+      }
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "rule",
+        "strokeWidth": 2
+      },
+      "encoding": {
+        "x": {
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              -0.02,
+              0.12
+            ]
+          },
+          "axis": {
+            "format": "+.0%",
+            "tickCount": 7,
+            "grid": false,
+            "domain": false,
+            "title": null,
+            "labelColor": "#777"
+          },
+          "field": "zero"
+        },
+        "x2": {
+          "field": "revpar_change"
+        },
+        "color": {
+          "field": "direction",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Rose",
+              "Fell"
+            ],
+            "range": [
+              "#b6a9d6",
+              "#f1a58f"
+            ]
+          },
+          "legend": null
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "circle",
+        "size": 140,
+        "opacity": 1
+      },
+      "encoding": {
+        "x": {
+          "field": "revpar_change",
+          "type": "quantitative"
+        },
+        "color": {
+          "field": "direction",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Rose",
+              "Fell"
+            ],
+            "range": [
+              "#6a51a3",
+              "#e4572e"
+            ]
+          },
+          "legend": null
+        },
+        "tooltip": [
+          {
+            "field": "city",
+            "type": "nominal",
+            "title": "City"
+          },
+          {
+            "field": "revpar_change",
+            "type": "quantitative",
+            "title": "Change",
+            "format": "+.1%"
+          }
+        ]
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.revpar_change >= 0"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 10,
+        "fontSize": 11,
+        "color": "#555"
+      },
+      "encoding": {
+        "x": {
+          "field": "revpar_change",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "revpar_change",
+          "type": "quantitative",
+          "format": "+.1%"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.revpar_change < 0"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "dx": -10,
+        "fontSize": 11,
+        "color": "#c43d1a"
+      },
+      "encoding": {
+        "x": {
+          "field": "revpar_change",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "revpar_change",
+          "type": "quantitative",
+          "format": "+.1%"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "zero": 0
+          }
+        ]
+      },
+      "mark": {
+        "type": "rule",
+        "color": "#999",
+        "strokeDash": [
+          3,
+          3
+        ]
+      },
+      "encoding": {
+        "x": {
+          "field": "zero",
+          "type": "quantitative"
+        },
+        "y": null
+      }
+    }
+  ],
+  "resolve": {
+    "scale": {
+      "color": "independent"
+    }
+  },
+  "config": {
+    "view": {
+      "stroke": null
+    }
+  }
+}
