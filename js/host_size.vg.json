@@ -1,181 +1,12 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": {
-    "text": "One in three listings belongs to a host with six or more",
-    "subtitle": "Share of Airbnb listings, by how many listings the host runs. Pick a council area to compare.",
+    "text": "Big operators rent out whole homes, not spare rooms",
+    "subtitle": [
+      "Each column is one group of hosts; its width shows its share of all listings. The split shows",
+      "whole homes vs rooms. Pick a council area, or click one on the map above."
+    ],
     "anchor": "start"
-  },
-  "width": 640,
-  "height": 170,
-  "data": {
-    "url": "data/listings_slim.csv"
-  },
-  "transform": [
-    {
-      "filter": "area === 'All of Melbourne' || datum.area === area"
-    },
-    {
-      "calculate": "datum.host_listings == 1 ? 'Just 1 listing' : datum.host_listings <= 5 ? '2 to 5 listings' : datum.host_listings <= 20 ? '6 to 20 listings' : '21 or more listings'",
-      "as": "host_group"
-    },
-    {
-      "aggregate": [
-        {
-          "op": "count",
-          "as": "listings"
-        }
-      ],
-      "groupby": [
-        "host_group"
-      ]
-    },
-    {
-      "joinaggregate": [
-        {
-          "op": "sum",
-          "field": "listings",
-          "as": "total"
-        }
-      ]
-    },
-    {
-      "calculate": "datum.listings / datum.total",
-      "as": "share"
-    },
-    {
-      "calculate": "datum.host_group === '6 to 20 listings' || datum.host_group === '21 or more listings' ? 'Larger operators' : 'Smaller hosts'",
-      "as": "kind"
-    }
-  ],
-  "encoding": {
-    "y": {
-      "field": "host_group",
-      "type": "nominal",
-      "sort": [
-        "Just 1 listing",
-        "2 to 5 listings",
-        "6 to 20 listings",
-        "21 or more listings"
-      ],
-      "title": "Host runs",
-      "axis": {
-        "ticks": false,
-        "domain": false,
-        "labelFontSize": 12,
-        "titleAngle": 0,
-        "titleAlign": "left",
-        "titleAnchor": "end",
-        "titleY": -10,
-        "titleX": -110,
-        "labelLimit": 220
-      }
-    },
-    "x": {
-      "field": "share",
-      "type": "quantitative",
-      "axis": null,
-      "scale": {
-        "domain": [
-          0,
-          0.5
-        ]
-      }
-    }
-  },
-  "layer": [
-    {
-      "mark": {
-        "type": "bar",
-        "cornerRadiusEnd": 4,
-        "height": 28
-      },
-      "encoding": {
-        "color": {
-          "field": "kind",
-          "type": "nominal",
-          "scale": {
-            "domain": [
-              "Smaller hosts",
-              "Larger operators"
-            ],
-            "range": [
-              "#d9d1c4",
-              "#0d3b45"
-            ]
-          },
-          "legend": null
-        },
-        "tooltip": [
-          {
-            "field": "host_group",
-            "type": "nominal",
-            "title": "Host runs"
-          },
-          {
-            "field": "listings",
-            "type": "quantitative",
-            "title": "Listings",
-            "format": ","
-          },
-          {
-            "field": "share",
-            "type": "quantitative",
-            "title": "Share of all listings",
-            "format": ".0%"
-          }
-        ]
-      }
-    },
-    {
-      "mark": {
-        "type": "text",
-        "align": "left",
-        "dx": 6,
-        "fontSize": 12,
-        "fontWeight": 600,
-        "color": "#3b4950"
-      },
-      "encoding": {
-        "text": {
-          "field": "share",
-          "type": "quantitative",
-          "format": ".0%"
-        }
-      }
-    },
-    {
-      "data": {
-        "values": [
-          {
-            "host_group": "21 or more listings",
-            "share": 0.235,
-            "note": "21 to 310 listings each"
-          }
-        ]
-      },
-      "mark": {
-        "type": "text",
-        "align": "left",
-        "fontSize": 12,
-        "fontStyle": "italic",
-        "color": "#7b858b"
-      },
-      "encoding": {
-        "text": {
-          "field": "note"
-        }
-      },
-      "transform": [
-        {
-          "filter": "area === 'All of Melbourne'"
-        }
-      ]
-    }
-  ],
-  "config": {
-    "view": {
-      "stroke": null
-    }
   },
   "params": [
     {
@@ -219,5 +50,301 @@
         "name": "Council area: "
       }
     }
-  ]
+  ],
+  "width": 700,
+  "height": 300,
+  "data": {
+    "url": "data/listings_slim.csv"
+  },
+  "transform": [
+    {
+      "filter": "area === 'All of Melbourne' || datum.area === area"
+    },
+    {
+      "calculate": "datum.host_listings == 1 ? 'Just 1' : datum.host_listings <= 5 ? '2 to 5' : datum.host_listings <= 20 ? '6 to 20' : '21 or more'",
+      "as": "host_group"
+    },
+    {
+      "calculate": "datum.room_type === 'Entire home/apt' ? 'Entire home' : 'Room (private, shared or hotel)'",
+      "as": "kind"
+    },
+    {
+      "aggregate": [
+        {
+          "op": "count",
+          "as": "n"
+        }
+      ],
+      "groupby": [
+        "host_group",
+        "kind"
+      ]
+    },
+    {
+      "calculate": "indexof(['Just 1', '2 to 5', '6 to 20', '21 or more'], datum.host_group)",
+      "as": "group_order"
+    },
+    {
+      "calculate": "datum.kind === 'Entire home' ? 0 : 1",
+      "as": "kind_order"
+    },
+    {
+      "stack": "n",
+      "groupby": [],
+      "as": [
+        "gx0",
+        "gx1"
+      ],
+      "offset": "normalize",
+      "sort": [
+        {
+          "field": "group_order"
+        },
+        {
+          "field": "kind_order"
+        }
+      ]
+    },
+    {
+      "joinaggregate": [
+        {
+          "op": "min",
+          "field": "gx0",
+          "as": "x0"
+        },
+        {
+          "op": "max",
+          "field": "gx1",
+          "as": "x1"
+        },
+        {
+          "op": "sum",
+          "field": "n",
+          "as": "group_n"
+        }
+      ],
+      "groupby": [
+        "host_group"
+      ]
+    },
+    {
+      "stack": "n",
+      "groupby": [
+        "host_group"
+      ],
+      "as": [
+        "y0",
+        "y1"
+      ],
+      "offset": "normalize",
+      "sort": [
+        {
+          "field": "kind_order"
+        }
+      ]
+    },
+    {
+      "calculate": "datum.n / datum.group_n",
+      "as": "share_in_group"
+    },
+    {
+      "calculate": "datum.x1 - datum.x0",
+      "as": "group_share"
+    },
+    {
+      "calculate": "(datum.x0 + datum.x1) / 2",
+      "as": "xmid"
+    },
+    {
+      "calculate": "(datum.y0 + datum.y1) / 2",
+      "as": "ymid"
+    }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "rect",
+        "stroke": "#ffffff",
+        "strokeWidth": 2
+      },
+      "params": [
+        {
+          "name": "kindHl",
+          "select": {
+            "type": "point",
+            "fields": [
+              "kind"
+            ],
+            "on": "mouseover",
+            "clear": "mouseout"
+          },
+          "bind": "legend"
+        }
+      ],
+      "encoding": {
+        "x": {
+          "field": "x0",
+          "type": "quantitative",
+          "axis": {
+            "format": ".0%",
+            "title": "Share of all listings",
+            "grid": false,
+            "domain": false,
+            "tickCount": 5,
+            "labelColor": "#7b858b",
+            "titleColor": "#7b858b"
+          },
+          "scale": {
+            "domain": [
+              0,
+              1
+            ]
+          }
+        },
+        "x2": {
+          "field": "x1"
+        },
+        "y": {
+          "field": "y0",
+          "type": "quantitative",
+          "axis": null,
+          "scale": {
+            "domain": [
+              0,
+              1
+            ]
+          }
+        },
+        "y2": {
+          "field": "y1"
+        },
+        "color": {
+          "field": "kind",
+          "type": "nominal",
+          "title": null,
+          "scale": {
+            "domain": [
+              "Entire home",
+              "Room (private, shared or hotel)"
+            ],
+            "range": [
+              "#00849e",
+              "#dc5d36"
+            ]
+          },
+          "legend": {
+            "orient": "top",
+            "direction": "horizontal",
+            "symbolType": "square",
+            "symbolSize": 140,
+            "labelFontSize": 12,
+            "offset": 30,
+            "labelLimit": 320
+          }
+        },
+        "opacity": {
+          "condition": {
+            "param": "kindHl",
+            "empty": true,
+            "value": 1
+          },
+          "value": 0.3
+        },
+        "tooltip": [
+          {
+            "field": "host_group",
+            "type": "nominal",
+            "title": "Host runs (listings)"
+          },
+          {
+            "field": "kind",
+            "type": "nominal",
+            "title": "Listing type"
+          },
+          {
+            "field": "n",
+            "type": "quantitative",
+            "title": "Listings",
+            "format": ","
+          },
+          {
+            "field": "share_in_group",
+            "type": "quantitative",
+            "title": "Share of this host group",
+            "format": ".0%"
+          },
+          {
+            "field": "group_share",
+            "type": "quantitative",
+            "title": "Host group's share of all listings",
+            "format": ".0%"
+          }
+        ]
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.group_share > 0.06 && datum.share_in_group > 0.07"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "fontSize": 13,
+        "fontWeight": 600,
+        "color": "#ffffff"
+      },
+      "encoding": {
+        "x": {
+          "field": "xmid",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "ymid",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "share_in_group",
+          "type": "quantitative",
+          "format": ".0%"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.group_share > 0.1"
+        },
+        {
+          "filter": "datum.kind_order === 0"
+        },
+        {
+          "calculate": "datum.host_group + (datum.host_group === 'Just 1' ? ' listing' : '') + ' · ' + format(datum.group_share, '.0%')",
+          "as": "label"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "fontSize": 12,
+        "fontWeight": 600,
+        "color": "#1d2a30",
+        "dy": -12,
+        "y": 0
+      },
+      "encoding": {
+        "x": {
+          "field": "xmid",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "label"
+        }
+      }
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": null
+    }
+  }
 }
