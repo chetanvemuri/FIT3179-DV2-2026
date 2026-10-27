@@ -2,7 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": {
     "text": "One in three listings belongs to a host with six or more",
-    "subtitle": "Share of Melbourne Airbnb listings, by how many listings the host runs",
+    "subtitle": "Share of Airbnb listings, by how many listings the host runs. Pick a council area to compare.",
     "anchor": "start"
   },
   "width": 640,
@@ -11,6 +11,9 @@
     "url": "data/listings_slim.csv"
   },
   "transform": [
+    {
+      "filter": "area === 'All of Melbourne' || datum.area === area"
+    },
     {
       "calculate": "datum.host_listings == 1 ? 'Just 1 listing' : datum.host_listings <= 5 ? '2 to 5 listings' : datum.host_listings <= 20 ? '6 to 20 listings' : '21 or more listings'",
       "as": "host_group"
@@ -161,12 +164,60 @@
         "text": {
           "field": "note"
         }
-      }
+      },
+      "transform": [
+        {
+          "filter": "area === 'All of Melbourne'"
+        }
+      ]
     }
   ],
   "config": {
     "view": {
       "stroke": null
     }
-  }
+  },
+  "params": [
+    {
+      "name": "area",
+      "value": "All of Melbourne",
+      "bind": {
+        "input": "select",
+        "options": [
+          "All of Melbourne",
+          "Banyule",
+          "Bayside",
+          "Boroondara",
+          "Brimbank",
+          "Cardinia",
+          "Casey",
+          "Darebin",
+          "Frankston",
+          "Glen Eira",
+          "Greater Dandenong",
+          "Hobsons Bay",
+          "Hume",
+          "Kingston",
+          "Knox",
+          "Manningham",
+          "Maribyrnong",
+          "Maroondah",
+          "Melbourne",
+          "Melton",
+          "Monash",
+          "Moonee Valley",
+          "Moreland",
+          "Nillumbik",
+          "Port Phillip",
+          "Stonnington",
+          "Whitehorse",
+          "Whittlesea",
+          "Wyndham",
+          "Yarra",
+          "Yarra Ranges"
+        ],
+        "name": "Council area: "
+      }
+    }
+  ]
 }

@@ -2,7 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": {
     "text": "No state has won back all of its international visitors",
-    "subtitle": "July 2026 overseas arrivals as a share of July 2019. Darker = closer to full recovery.",
+    "subtitle": "July 2026 overseas arrivals as a share of the year you choose. Darker = closer to that level.",
     "anchor": "start"
   },
   "width": 780,
@@ -49,6 +49,10 @@
         {
           "calculate": "(datum.jul_2026 - datum.jul_2025) / datum.jul_2025",
           "as": "change_1yr"
+        },
+        {
+          "calculate": "base === '2019' ? datum.recovery : datum.jul_2026 / datum.jul_2025",
+          "as": "ratio"
         }
       ],
       "mark": {
@@ -58,9 +62,9 @@
       },
       "encoding": {
         "color": {
-          "field": "recovery",
+          "field": "ratio",
           "type": "quantitative",
-          "title": "Share of 2019 level",
+          "title": "July 2026 as a share of chosen year",
           "scale": {
             "range": [
               "#e3f1f3",
@@ -77,7 +81,7 @@
             "orient": "bottom-left",
             "direction": "horizontal",
             "gradientLength": 200,
-            "titleLimit": 250
+            "titleLimit": 320
           }
         },
         "tooltip": [
@@ -96,6 +100,12 @@
             "field": "jul_2019",
             "type": "quantitative",
             "title": "Visitors, July 2019",
+            "format": ","
+          },
+          {
+            "field": "jul_2025",
+            "type": "quantitative",
+            "title": "Visitors, July 2025",
             "format": ","
           },
           {
@@ -119,7 +129,11 @@
       },
       "transform": [
         {
-          "calculate": "datum.abbr + ' ' + format(datum.jul_2026 / datum.jul_2019, '.0%')",
+          "calculate": "datum.jul_2026 / (base === '2019' ? datum.jul_2019 : datum.jul_2025)",
+          "as": "ratio"
+        },
+        {
+          "calculate": "datum.abbr + ' ' + format(datum.ratio, '.0%')",
           "as": "label"
         }
       ],
@@ -143,7 +157,7 @@
         },
         "color": {
           "condition": {
-            "test": "datum.jul_2026 / datum.jul_2019 > 0.85",
+            "test": "datum.ratio > 0.85",
             "value": "#ffffff"
           },
           "value": "#1d2a30"
@@ -155,5 +169,23 @@
     "view": {
       "stroke": null
     }
-  }
+  },
+  "params": [
+    {
+      "name": "base",
+      "value": "2019",
+      "bind": {
+        "input": "radio",
+        "options": [
+          "2019",
+          "2025"
+        ],
+        "labels": [
+          "July 2019 (before COVID)",
+          "July 2025 (a year ago)"
+        ],
+        "name": "Compare July 2026 with: "
+      }
+    }
+  ]
 }

@@ -1,14 +1,17 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": {
-    "text": "A whole home costs almost three times as much as a room",
-    "subtitle": "Listings by nightly price ($25 steps). Dashed line = typical (middle) price. Prices over $1,000 not shown.",
+    "text": "Whole homes cost far more than a room",
+    "subtitle": "Listings by nightly price ($25 steps). Dashed line = typical (middle) price. Pick a council area to compare.",
     "anchor": "start"
   },
   "data": {
     "url": "data/listings_slim.csv"
   },
   "transform": [
+    {
+      "filter": "area === 'All of Melbourne' || datum.area === area"
+    },
     {
       "filter": "isValid(datum.price) && (datum.room_type === 'Entire home/apt' || datum.room_type === 'Private room')"
     },
@@ -221,5 +224,48 @@
     "view": {
       "stroke": null
     }
-  }
+  },
+  "params": [
+    {
+      "name": "area",
+      "value": "All of Melbourne",
+      "bind": {
+        "input": "select",
+        "options": [
+          "All of Melbourne",
+          "Banyule",
+          "Bayside",
+          "Boroondara",
+          "Brimbank",
+          "Cardinia",
+          "Casey",
+          "Darebin",
+          "Frankston",
+          "Glen Eira",
+          "Greater Dandenong",
+          "Hobsons Bay",
+          "Hume",
+          "Kingston",
+          "Knox",
+          "Manningham",
+          "Maribyrnong",
+          "Maroondah",
+          "Melbourne",
+          "Melton",
+          "Monash",
+          "Moonee Valley",
+          "Moreland",
+          "Nillumbik",
+          "Port Phillip",
+          "Stonnington",
+          "Whitehorse",
+          "Whittlesea",
+          "Wyndham",
+          "Yarra",
+          "Yarra Ranges"
+        ],
+        "name": "Council area: "
+      }
+    }
+  ]
 }

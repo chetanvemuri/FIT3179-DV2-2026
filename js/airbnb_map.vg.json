@@ -2,7 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": {
     "text": "Where Melbourne's Airbnbs are",
-    "subtitle": "Each dot is one listing. Click a room type in the legend to highlight it.",
+    "subtitle": "Each dot is one listing. Click a room type in the legend, or drag the slider to filter by price.",
     "anchor": "start"
   },
   "width": 780,
@@ -54,6 +54,9 @@
       "transform": [
         {
           "filter": "isValid(datum.lat) && isValid(datum.lon)"
+        },
+        {
+          "filter": "maxPrice >= 1000 || (isValid(datum.price) && datum.price <= maxPrice)"
         }
       ],
       "mark": {
@@ -154,6 +157,19 @@
           "field": "label",
           "type": "nominal"
         }
+      }
+    }
+  ],
+  "params": [
+    {
+      "name": "maxPrice",
+      "value": 1000,
+      "bind": {
+        "input": "range",
+        "min": 50,
+        "max": 1000,
+        "step": 25,
+        "name": "Show listings up to $ per night: "
       }
     }
   ]

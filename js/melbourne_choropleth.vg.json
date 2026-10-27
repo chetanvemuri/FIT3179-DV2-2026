@@ -2,7 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": {
     "text": "Whole homes near the city, rooms in the outer suburbs",
-    "subtitle": "Share of each council area's listings that are entire homes. Hover for details.",
+    "subtitle": "Share of each council area's listings that are entire homes. Click an area to see its prices and hosts below.",
     "anchor": "start"
   },
   "width": 780,
@@ -45,6 +45,17 @@
             "on": "mouseover",
             "clear": "mouseout"
           }
+        },
+        {
+          "name": "pickArea",
+          "select": {
+            "type": "point",
+            "fields": [
+              "properties.neighbourhood"
+            ],
+            "on": "click",
+            "clear": "dblclick"
+          }
         }
       ],
       "mark": {
@@ -84,19 +95,33 @@
           }
         },
         "stroke": {
-          "condition": {
-            "param": "hover",
-            "empty": false,
-            "value": "#1d2a30"
-          },
+          "condition": [
+            {
+              "param": "pickArea",
+              "empty": false,
+              "value": "#dc5d36"
+            },
+            {
+              "param": "hover",
+              "empty": false,
+              "value": "#1d2a30"
+            }
+          ],
           "value": "#ffffff"
         },
         "strokeWidth": {
-          "condition": {
-            "param": "hover",
-            "empty": false,
-            "value": 2.5
-          },
+          "condition": [
+            {
+              "param": "pickArea",
+              "empty": false,
+              "value": 3.5
+            },
+            {
+              "param": "hover",
+              "empty": false,
+              "value": 2.5
+            }
+          ],
           "value": 1
         },
         "order": {

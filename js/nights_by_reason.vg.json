@@ -129,11 +129,33 @@
         "title": "Share of all nights",
         "format": ".0%"
       }
-    ]
+    ],
+    "opacity": {
+      "condition": {
+        "param": "hl",
+        "empty": true,
+        "value": 1
+      },
+      "value": 0.25
+    }
   },
   "config": {
     "view": {
       "stroke": null
     }
-  }
+  },
+  "params": [
+    {
+      "name": "hl",
+      "select": {
+        "type": "point",
+        "fields": [
+          "reason"
+        ],
+        "on": "mouseover",
+        "clear": "mouseout"
+      },
+      "bind": "legend"
+    }
+  ]
 }

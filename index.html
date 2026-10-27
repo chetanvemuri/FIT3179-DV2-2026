@@ -182,6 +182,32 @@
       line-height: 1.5;
     }
 
+    /* Chart controls (dropdowns, sliders, radio buttons) */
+    .vega-bindings {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 20px;
+      justify-content: center;
+      margin-top: 14px;
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      color: var(--ink-2);
+    }
+    .vega-bind { display: flex; align-items: center; gap: 6px; }
+    .vega-bind-name { font-weight: 600; color: var(--ink); }
+    .vega-bind select {
+      font: inherit;
+      padding: 5px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--sand);
+      color: var(--ink);
+    }
+    .vega-bind input[type="range"] { accent-color: var(--ocean); width: 200px; }
+    .vega-bind input[type="radio"] { accent-color: var(--ocean); }
+    .vega-bind label { margin-right: 10px; }
+    .chart-card > div { flex-direction: column; align-items: center; }
+
     /* Vega tooltip */
     #vg-tooltip-element {
       font-family: var(--sans) !important;
@@ -369,7 +395,8 @@
         In the inner city, by the bay and in the
         <span class="hl-ocean">Yarra Ranges</span>, over 80% of listings are
         whole homes. In <span class="hl-terra">Dandenong</span> and
-        <span class="hl-terra">Wyndham</span>, more locals rent out a spare room.
+        <span class="hl-terra">Wyndham</span>, more locals rent out a spare room. Click an area to update the two
+        charts below.
       </p>
       <div class="chart-card"><div id="melbourne_choropleth"></div></div>
     </section>
@@ -481,7 +508,7 @@
         graphic.style.height = (hgt * avail / w) + "px";
       }
     }
-    const embed = (id, spec, o) => vegaEmbed(id, spec, o).then(fitToCard);
+    const embed = (id, spec, o) => vegaEmbed(id, spec, o).then(r => { fitToCard(r); return r; });
 
     embed("#nights_by_reason", "js/nights_by_reason.vg.json", opts);
     embed("#tourism_spend", "js/tourism_spend_dotplot.vg.json", opts);
@@ -489,9 +516,22 @@
     embed("#seasons_heatmap", "js/seasons_heatmap.vg.json", opts);
     embed("#visitor_origins", "js/visitor_origins.vg.json", opts);
     embed("#airbnb_map", "js/airbnb_map.vg.json", canvasOpts);
-    embed("#melbourne_choropleth", "js/melbourne_choropleth.vg.json", opts);
-    embed("#price_histogram", "js/price_histogram.vg.json", opts);
-    embed("#host_size", "js/host_size.vg.json", opts);
+    // Clicking a council area on the Melbourne map updates the area dropdowns
+    // of the price and host charts below it (double-click resets).
+    Promise.all([
+      embed("#melbourne_choropleth", "js/melbourne_choropleth.vg.json", opts),
+      embed("#price_histogram", "js/price_histogram.vg.json", opts),
+      embed("#host_size", "js/host_size.vg.json", opts)
+    ]).then(([map, prices, hosts]) => {
+      const setArea = name => {
+        [prices, hosts].forEach(r => r.view.signal("area", name).runAsync());
+      };
+      map.view.addEventListener("click", (event, item) => {
+        const name = item && item.datum && item.datum.properties && item.datum.properties.neighbourhood;
+        if (name) setArea(name);
+      });
+      map.view.addEventListener("dblclick", () => setArea("All of Melbourne"));
+    });
     embed("#hotel_markets", "js/hotel_markets.vg.json", opts);
   </script>
 </body>

@@ -71,8 +71,26 @@
             "title": "$ billion",
             "format": ".1f"
           }
-        ]
-      }
+        ],
+        "size": {
+          "condition": {
+            "param": "hv",
+            "empty": false,
+            "value": 260
+          },
+          "value": 110
+        }
+      },
+      "params": [
+        {
+          "name": "hv",
+          "select": {
+            "type": "point",
+            "on": "mouseover",
+            "clear": "mouseout"
+          }
+        }
+      ]
     },
     {
       "mark": {
