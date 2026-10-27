@@ -2,11 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": {
     "text": "A whole home costs almost three times as much as a room",
-    "subtitle": [
-      "Number of Melbourne Airbnb listings at each nightly price, in $25 steps. The dashed line marks",
-      "the typical (middle) price: half the listings cost less and half cost more. Listings above $1,000",
-      "a night (about 2.5%) and listings with no current price are left out."
-    ],
+    "subtitle": "Listings by nightly price ($25 steps). Dashed line = typical (middle) price. Prices over $1,000 not shown.",
     "anchor": "start"
   },
   "data": {
@@ -67,8 +63,8 @@
     }
   },
   "spec": {
-    "width": 640,
-    "height": 150,
+    "width": 700,
+    "height": 140,
     "layer": [
       {
         "mark": {

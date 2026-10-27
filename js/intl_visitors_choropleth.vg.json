@@ -2,14 +2,11 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": {
     "text": "No state has won back all of its international visitors",
-    "subtitle": [
-      "Overseas visitors arriving in July 2026, as a share of July 2019 (before COVID).",
-      "Darker states are closer to full recovery. Hover over a state for the numbers."
-    ],
+    "subtitle": "July 2026 overseas arrivals as a share of July 2019. Darker = closer to full recovery.",
     "anchor": "start"
   },
-  "width": 600,
-  "height": 480,
+  "width": 780,
+  "height": 600,
   "projection": {
     "type": "conicEqualArea",
     "parallels": [

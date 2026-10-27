@@ -1,15 +1,11 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": {
-    "text": "Close to the city and the hills, Airbnbs are whole homes",
-    "subtitle": [
-      "Share of each council area's Airbnb listings that are an entire home or apartment.",
-      "In the outer west and south-east, more hosts rent out a room in the home they live in.",
-      "Hover over a council area for its numbers."
-    ],
+    "text": "Whole homes near the city, rooms in the outer suburbs",
+    "subtitle": "Share of each council area's listings that are entire homes. Hover for details.",
     "anchor": "start"
   },
-  "width": 700,
+  "width": 780,
   "height": 520,
   "projection": {
     "type": "mercator"
@@ -77,14 +73,14 @@
           },
           "legend": {
             "orient": "none",
-            "legendX": 0,
-            "legendY": 0,
+            "legendX": 10,
+            "legendY": 10,
             "direction": "horizontal",
             "format": ".0%",
             "titleLimit": 400,
-            "labelFontSize": 12,
+            "labelFontSize": 11,
             "symbolSize": 0,
-            "title": "Share of listings that are entire homes"
+            "title": "Entire homes"
           }
         },
         "stroke": {
@@ -154,24 +150,19 @@
       "data": {
         "values": [
           {
-            "label": "City of Melbourne: 83%",
-            "lon": 144.95,
-            "lat": -37.775
-          },
-          {
-            "label": "Yarra Ranges: 89%",
+            "label": "Yarra Ranges 89%",
             "lon": 145.68,
             "lat": -37.72
           },
           {
-            "label": "Greater Dandenong: 39%",
-            "lon": 145.21,
-            "lat": -37.985
+            "label": "Dandenong 39%",
+            "lon": 145.24,
+            "lat": -38.0
           },
           {
-            "label": "Wyndham: 42%",
+            "label": "Wyndham 42%",
             "lon": 144.62,
-            "lat": -37.9
+            "lat": -37.92
           }
         ]
       },
@@ -202,24 +193,19 @@
       "data": {
         "values": [
           {
-            "label": "City of Melbourne: 83%",
-            "lon": 144.95,
-            "lat": -37.775
-          },
-          {
-            "label": "Yarra Ranges: 89%",
+            "label": "Yarra Ranges 89%",
             "lon": 145.68,
             "lat": -37.72
           },
           {
-            "label": "Greater Dandenong: 39%",
-            "lon": 145.21,
-            "lat": -37.985
+            "label": "Dandenong 39%",
+            "lon": 145.24,
+            "lat": -38.0
           },
           {
-            "label": "Wyndham: 42%",
+            "label": "Wyndham 42%",
             "lon": 144.62,
-            "lat": -37.9
+            "lat": -37.92
           }
         ]
       },

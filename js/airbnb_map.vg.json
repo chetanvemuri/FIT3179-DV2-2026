@@ -2,14 +2,11 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": {
     "text": "Where Melbourne's Airbnbs are",
-    "subtitle": [
-      "Each dot is one of 25,715 listings on Airbnb in Greater Melbourne. Click a room type",
-      "in the legend to highlight it (shift-click to pick more than one)."
-    ],
+    "subtitle": "Each dot is one listing. Click a room type in the legend to highlight it.",
     "anchor": "start"
   },
-  "width": 700,
-  "height": 550,
+  "width": 780,
+  "height": 540,
   "projection": {
     "type": "mercator"
   },

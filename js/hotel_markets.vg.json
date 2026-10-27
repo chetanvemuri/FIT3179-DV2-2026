@@ -2,10 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": {
     "text": "Hotels in nine of ten cities are earning more per room",
-    "subtitle": [
-      "Change in hotel income per available room, Jan–Jun 2026 vs Jan–Jun 2025. This measure counts empty",
-      "rooms too, so it rises when hotels fill more rooms or charge more. Hover over a city to find it in both views."
-    ],
+    "subtitle": "Hotel income per available room, Jan–Jun 2026 vs a year earlier. Hover a city to find it in both views.",
     "anchor": "start"
   },
   "params": [
@@ -25,11 +22,22 @@
       ]
     }
   ],
-  "spacing": 24,
-  "hconcat": [
+  "spacing": 28,
+  "resolve": {
+    "scale": {
+      "color": "independent",
+      "size": "independent"
+    }
+  },
+  "config": {
+    "view": {
+      "stroke": null
+    }
+  },
+  "vconcat": [
     {
-      "width": 340,
-      "height": 330,
+      "width": 640,
+      "height": 440,
       "projection": {
         "type": "conicEqualArea",
         "parallels": [
@@ -42,10 +50,8 @@
         ]
       },
       "title": {
-        "text": "Australia's ten biggest hotel markets",
-        "fontSize": 15,
-        "subtitle": "Darker teal = bigger rise in income per room",
-        "subtitleFontSize": 12
+        "text": "Where the markets are",
+        "fontSize": 15
       },
       "layer": [
         {
@@ -225,13 +231,11 @@
       ]
     },
     {
-      "width": 290,
-      "height": 330,
+      "width": 620,
+      "height": 300,
       "title": {
-        "text": "Change in income per room",
-        "fontSize": 15,
-        "subtitle": "Jan–Jun 2026 vs Jan–Jun 2025",
-        "subtitleFontSize": 12
+        "text": "Change by market",
+        "fontSize": 15
       },
       "data": {
         "url": "data/hotel_revpar_growth.csv"
@@ -439,16 +443,5 @@
         }
       }
     }
-  ],
-  "resolve": {
-    "scale": {
-      "color": "independent",
-      "size": "independent"
-    }
-  },
-  "config": {
-    "view": {
-      "stroke": null
-    }
-  }
+  ]
 }

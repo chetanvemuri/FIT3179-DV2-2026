@@ -1,12 +1,12 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": {
-    "text": "One in three Melbourne Airbnbs is run by a host with six or more",
-    "subtitle": "Share of all Airbnb listings in Greater Melbourne, by how many listings their host runs",
+    "text": "One in three listings belongs to a host with six or more",
+    "subtitle": "Share of Melbourne Airbnb listings, by how many listings the host runs",
     "anchor": "start"
   },
-  "width": 600,
-  "height": 190,
+  "width": 640,
+  "height": 170,
   "data": {
     "url": "data/listings_slim.csv"
   },
@@ -146,7 +146,7 @@
           {
             "host_group": "21 or more listings",
             "share": 0.235,
-            "note": "Each of these hosts runs between 21 and 310 listings"
+            "note": "21 to 310 listings each"
           }
         ]
       },

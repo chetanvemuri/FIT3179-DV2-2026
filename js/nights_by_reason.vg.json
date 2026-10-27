@@ -2,37 +2,104 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": {
     "text": "Almost 4 in 10 travel nights are spent visiting friends and family",
-    "subtitle": "Nights on domestic overnight trips by main reason, June quarter 2026. Each square is 1% of all nights (about 0.9 million).",
+    "subtitle": "Domestic overnight trips, June quarter 2026. Each square = 1% of nights.",
     "anchor": "start"
   },
-  "width": 600,
-  "height": 160,
-  "data": {"url": "data/nights_by_reason.csv"},
+  "width": 760,
+  "height": 190,
+  "data": {
+    "url": "data/nights_by_reason.csv"
+  },
   "transform": [
-    {"joinaggregate": [{"op": "sum", "field": "nights", "as": "total"}]},
-    {"calculate": "datum.nights / datum.total", "as": "share"},
-    {"calculate": "datum.nights / 1000000", "as": "nights_m"},
-    {"calculate": "indexof(['Holiday', 'Visiting friends and relatives', 'Business', 'Other reason'], datum.reason)", "as": "order"},
-    {"calculate": "sequence(0, round(datum.share * 100))", "as": "squares"},
-    {"flatten": ["squares"]},
     {
-      "window": [{"op": "row_number", "as": "idx"}],
-      "sort": [{"field": "order"}, {"field": "squares"}]
+      "joinaggregate": [
+        {
+          "op": "sum",
+          "field": "nights",
+          "as": "total"
+        }
+      ]
     },
-    {"calculate": "floor((datum.idx - 1) / 5)", "as": "col"},
-    {"calculate": "(datum.idx - 1) % 5", "as": "row"}
+    {
+      "calculate": "datum.nights / datum.total",
+      "as": "share"
+    },
+    {
+      "calculate": "datum.nights / 1000000",
+      "as": "nights_m"
+    },
+    {
+      "calculate": "indexof(['Holiday', 'Visiting friends and relatives', 'Business', 'Other reason'], datum.reason)",
+      "as": "order"
+    },
+    {
+      "calculate": "sequence(0, round(datum.share * 100))",
+      "as": "squares"
+    },
+    {
+      "flatten": [
+        "squares"
+      ]
+    },
+    {
+      "window": [
+        {
+          "op": "row_number",
+          "as": "idx"
+        }
+      ],
+      "sort": [
+        {
+          "field": "order"
+        },
+        {
+          "field": "squares"
+        }
+      ]
+    },
+    {
+      "calculate": "floor((datum.idx - 1) / 5)",
+      "as": "col"
+    },
+    {
+      "calculate": "(datum.idx - 1) % 5",
+      "as": "row"
+    }
   ],
-  "mark": {"type": "rect", "cornerRadius": 3, "stroke": "#ffffff", "strokeWidth": 3},
+  "mark": {
+    "type": "rect",
+    "cornerRadius": 3,
+    "stroke": "#ffffff",
+    "strokeWidth": 3
+  },
   "encoding": {
-    "x": {"field": "col", "type": "ordinal", "axis": null},
-    "y": {"field": "row", "type": "ordinal", "axis": null},
+    "x": {
+      "field": "col",
+      "type": "ordinal",
+      "axis": null
+    },
+    "y": {
+      "field": "row",
+      "type": "ordinal",
+      "axis": null
+    },
     "color": {
       "field": "reason",
       "type": "nominal",
       "title": null,
       "scale": {
-        "domain": ["Holiday", "Visiting friends and relatives", "Business", "Other reason"],
-        "range": ["#00849e", "#dc5d36", "#0d3b45", "#cfc6b8"]
+        "domain": [
+          "Holiday",
+          "Visiting friends and relatives",
+          "Business",
+          "Other reason"
+        ],
+        "range": [
+          "#00849e",
+          "#dc5d36",
+          "#0d3b45",
+          "#cfc6b8"
+        ]
       },
       "legend": {
         "orient": "bottom",
@@ -45,10 +112,28 @@
       }
     },
     "tooltip": [
-      {"field": "reason", "type": "nominal", "title": "Main reason"},
-      {"field": "nights_m", "type": "quantitative", "title": "Nights (millions)", "format": ".1f"},
-      {"field": "share", "type": "quantitative", "title": "Share of all nights", "format": ".0%"}
+      {
+        "field": "reason",
+        "type": "nominal",
+        "title": "Main reason"
+      },
+      {
+        "field": "nights_m",
+        "type": "quantitative",
+        "title": "Nights (millions)",
+        "format": ".1f"
+      },
+      {
+        "field": "share",
+        "type": "quantitative",
+        "title": "Share of all nights",
+        "format": ".0%"
+      }
     ]
   },
-  "config": {"view": {"stroke": null}}
+  "config": {
+    "view": {
+      "stroke": null
+    }
+  }
 }

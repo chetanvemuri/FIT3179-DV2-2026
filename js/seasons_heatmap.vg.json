@@ -2,11 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": {
     "text": "Summer is peak season everywhere except the Top End",
-    "subtitle": [
-      "Overseas visitors arriving each month (Aug 2025 to Jul 2026), compared",
-      "with each state's own monthly average. Orange = busier than usual,",
-      "teal = quieter. Hover over a square for the numbers."
-    ],
+    "subtitle": "Overseas arrivals each month vs the state's own average (Aug 2025 – Jul 2026). Orange = busier, teal = quieter.",
     "anchor": "start"
   },
   "data": {
@@ -62,8 +58,8 @@
   },
   "spacing": 6,
   "spec": {
-    "width": 120,
-    "height": 260,
+    "width": 155,
+    "height": 300,
     "layer": [
       {
         "mark": {

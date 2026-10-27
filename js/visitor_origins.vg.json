@@ -3,9 +3,8 @@
   "title": {
     "text": "Fewer visitors from China and the US, more from Korea and Taiwan",
     "subtitle": [
-      "Short-term overseas visitors arriving in Australia in July 2026, top 10 countries of residence.",
-      "Circle size shows visitors in July 2026; colour shows the change since July 2019.",
-      "Hover over a country on the map or in the chart below to highlight it in both."
+      "Top 10 countries, July 2026. Circle size = visitors; colour = change since July 2019.",
+      "Hover a country to highlight it in both views."
     ],
     "anchor": "start"
   },
@@ -29,7 +28,7 @@
   "spacing": 30,
   "vconcat": [
     {
-      "width": 760,
+      "width": 780,
       "height": 390,
       "projection": {
         "type": "equalEarth",
@@ -343,11 +342,11 @@
       ]
     },
     {
-      "width": 600,
+      "width": 660,
       "height": 300,
       "title": {
         "text": "Visitors in July 2019 and July 2026",
-        "subtitle": "Hollow dot = July 2019, filled dot = July 2026. Countries ordered by visitors in 2026.",
+        "subtitle": "Hollow dot = July 2019, filled dot = July 2026",
         "fontSize": 16
       },
       "data": {

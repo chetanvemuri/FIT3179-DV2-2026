@@ -2,10 +2,10 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": {
     "text": "Tourists spend more on meals than on a bed",
-    "subtitle": "What tourists in Australia spent their money on, 2024–25 ($ billion)",
+    "subtitle": "Tourist spending in Australia, 2024–25 ($ billion)",
     "anchor": "start"
   },
-  "width": 520,
+  "width": 500,
   "height": 380,
   "data": {
     "url": "data/tourism_spend_by_product.csv"

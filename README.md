@@ -10,4 +10,3 @@ Live page: https://chetanvemuri.github.io/FIT3179-DV2-2026/
 - `js/theme.js` – shared fonts and colours for all charts
 - `data/` – data loaded by the page (about 1.5 MB in total)
 - `data/raw/` – original Inside Airbnb downloads (not loaded by the page)
-- `scripts/prepare_data.py` – how the slim Airbnb files were made from `data/raw/`
