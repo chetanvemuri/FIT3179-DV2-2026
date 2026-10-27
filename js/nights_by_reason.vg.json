@@ -2,107 +2,53 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": {
     "text": "Almost 4 in 10 travel nights are spent visiting friends and family",
-    "subtitle": "Nights on domestic overnight trips by main reason for the trip, June quarter 2026 (millions)",
+    "subtitle": "Nights on domestic overnight trips by main reason, June quarter 2026. Each square is 1% of all nights (about 0.9 million).",
     "anchor": "start"
   },
   "width": 600,
-  "height": 200,
-  "data": {
-    "url": "data/nights_by_reason.csv"
-  },
+  "height": 160,
+  "data": {"url": "data/nights_by_reason.csv"},
   "transform": [
+    {"joinaggregate": [{"op": "sum", "field": "nights", "as": "total"}]},
+    {"calculate": "datum.nights / datum.total", "as": "share"},
+    {"calculate": "datum.nights / 1000000", "as": "nights_m"},
+    {"calculate": "indexof(['Holiday', 'Visiting friends and relatives', 'Business', 'Other reason'], datum.reason)", "as": "order"},
+    {"calculate": "sequence(0, round(datum.share * 100))", "as": "squares"},
+    {"flatten": ["squares"]},
     {
-      "calculate": "datum.nights / 1000000",
-      "as": "nights_m"
+      "window": [{"op": "row_number", "as": "idx"}],
+      "sort": [{"field": "order"}, {"field": "squares"}]
     },
-    {
-      "joinaggregate": [
-        {
-          "op": "sum",
-          "field": "nights",
-          "as": "total"
-        }
-      ]
-    },
-    {
-      "calculate": "datum.nights / datum.total",
-      "as": "share"
-    }
+    {"calculate": "floor((datum.idx - 1) / 5)", "as": "col"},
+    {"calculate": "(datum.idx - 1) % 5", "as": "row"}
   ],
+  "mark": {"type": "rect", "cornerRadius": 3, "stroke": "#ffffff", "strokeWidth": 3},
   "encoding": {
-    "y": {
+    "x": {"field": "col", "type": "ordinal", "axis": null},
+    "y": {"field": "row", "type": "ordinal", "axis": null},
+    "color": {
       "field": "reason",
       "type": "nominal",
-      "sort": "-x",
       "title": null,
-      "axis": {
-        "ticks": false,
-        "domain": false,
-        "labelFontSize": 12,
+      "scale": {
+        "domain": ["Holiday", "Visiting friends and relatives", "Business", "Other reason"],
+        "range": ["#00849e", "#dc5d36", "#0d3b45", "#cfc6b8"]
+      },
+      "legend": {
+        "orient": "bottom",
+        "direction": "horizontal",
+        "symbolType": "square",
+        "symbolSize": 160,
+        "labelFontSize": 13,
+        "columnPadding": 18,
         "labelLimit": 260
       }
     },
-    "x": {
-      "field": "nights_m",
-      "type": "quantitative",
-      "axis": null
-    }
+    "tooltip": [
+      {"field": "reason", "type": "nominal", "title": "Main reason"},
+      {"field": "nights_m", "type": "quantitative", "title": "Nights (millions)", "format": ".1f"},
+      {"field": "share", "type": "quantitative", "title": "Share of all nights", "format": ".0%"}
+    ]
   },
-  "layer": [
-    {
-      "mark": {
-        "type": "bar",
-        "cornerRadiusEnd": 4
-      },
-      "encoding": {
-        "color": {
-          "condition": {
-            "test": "datum.reason === 'Visiting friends and relatives'",
-            "value": "#dc5d36"
-          },
-          "value": "#d9d1c4"
-        },
-        "tooltip": [
-          {
-            "field": "reason",
-            "type": "nominal",
-            "title": "Reason"
-          },
-          {
-            "field": "nights_m",
-            "type": "quantitative",
-            "title": "Nights (millions)",
-            "format": ".1f"
-          },
-          {
-            "field": "share",
-            "type": "quantitative",
-            "title": "Share of all nights",
-            "format": ".0%"
-          }
-        ]
-      }
-    },
-    {
-      "mark": {
-        "type": "text",
-        "align": "left",
-        "dx": 4,
-        "fontSize": 11,
-        "color": "#5b6770"
-      },
-      "encoding": {
-        "text": {
-          "field": "nights_m",
-          "type": "quantitative",
-          "format": ".1f"
-        }
-      }
-    }
-  ],
-  "config": {
-    "view": {
-      "stroke": null
-    }
-  }
+  "config": {"view": {"stroke": null}}
 }

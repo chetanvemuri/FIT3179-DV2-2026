@@ -1,0 +1,282 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Close to the city and the hills, Airbnbs are whole homes",
+    "subtitle": [
+      "Share of each council area's Airbnb listings that are an entire home or apartment.",
+      "In the outer west and south-east, more hosts rent out a room in the home they live in.",
+      "Hover over a council area for its numbers."
+    ],
+    "anchor": "start"
+  },
+  "width": 700,
+  "height": 520,
+  "projection": {
+    "type": "mercator"
+  },
+  "layer": [
+    {
+      "data": {
+        "url": "data/melbourne_lgas.topojson",
+        "format": {
+          "type": "topojson",
+          "feature": "lgas"
+        }
+      },
+      "transform": [
+        {
+          "lookup": "properties.neighbourhood",
+          "from": {
+            "data": {
+              "url": "data/melbourne_lga_summary.csv"
+            },
+            "key": "area",
+            "fields": [
+              "listings",
+              "entire_share",
+              "median_price_entire",
+              "median_price_room",
+              "multi_host_share"
+            ]
+          }
+        }
+      ],
+      "params": [
+        {
+          "name": "hover",
+          "select": {
+            "type": "point",
+            "on": "mouseover",
+            "clear": "mouseout"
+          }
+        }
+      ],
+      "mark": {
+        "type": "geoshape"
+      },
+      "encoding": {
+        "color": {
+          "field": "entire_share",
+          "type": "quantitative",
+          "title": "Listings that are entire homes",
+          "scale": {
+            "type": "threshold",
+            "domain": [
+              0.5,
+              0.6,
+              0.7,
+              0.8
+            ],
+            "range": [
+              "#f6e3d8",
+              "#e9b79f",
+              "#9fd0da",
+              "#3aa0b5",
+              "#0a5f70"
+            ]
+          },
+          "legend": {
+            "orient": "none",
+            "legendX": 0,
+            "legendY": 0,
+            "direction": "horizontal",
+            "format": ".0%",
+            "titleLimit": 400,
+            "labelFontSize": 12,
+            "symbolSize": 0,
+            "title": "Share of listings that are entire homes"
+          }
+        },
+        "stroke": {
+          "condition": {
+            "param": "hover",
+            "empty": false,
+            "value": "#1d2a30"
+          },
+          "value": "#ffffff"
+        },
+        "strokeWidth": {
+          "condition": {
+            "param": "hover",
+            "empty": false,
+            "value": 2.5
+          },
+          "value": 1
+        },
+        "order": {
+          "condition": {
+            "param": "hover",
+            "empty": false,
+            "value": 1
+          },
+          "value": 0
+        },
+        "tooltip": [
+          {
+            "field": "properties.neighbourhood",
+            "type": "nominal",
+            "title": "Council area"
+          },
+          {
+            "field": "listings",
+            "type": "quantitative",
+            "title": "Airbnb listings",
+            "format": ","
+          },
+          {
+            "field": "entire_share",
+            "type": "quantitative",
+            "title": "Entire homes",
+            "format": ".0%"
+          },
+          {
+            "field": "median_price_entire",
+            "type": "quantitative",
+            "title": "Typical price, entire home",
+            "format": "$,.0f"
+          },
+          {
+            "field": "median_price_room",
+            "type": "quantitative",
+            "title": "Typical price, private room",
+            "format": "$,.0f"
+          },
+          {
+            "field": "multi_host_share",
+            "type": "quantitative",
+            "title": "Run by hosts with 6+ listings",
+            "format": ".0%"
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "label": "City of Melbourne: 83%",
+            "lon": 144.95,
+            "lat": -37.775
+          },
+          {
+            "label": "Yarra Ranges: 89%",
+            "lon": 145.68,
+            "lat": -37.72
+          },
+          {
+            "label": "Greater Dandenong: 39%",
+            "lon": 145.21,
+            "lat": -37.985
+          },
+          {
+            "label": "Wyndham: 42%",
+            "lon": 144.62,
+            "lat": -37.9
+          }
+        ]
+      },
+      "encoding": {
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "label"
+        }
+      },
+      "mark": {
+        "type": "text",
+        "fontSize": 12,
+        "fontWeight": 600,
+        "stroke": "#ffffff",
+        "strokeWidth": 3.5,
+        "strokeJoin": "round",
+        "opacity": 0.9
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "label": "City of Melbourne: 83%",
+            "lon": 144.95,
+            "lat": -37.775
+          },
+          {
+            "label": "Yarra Ranges: 89%",
+            "lon": 145.68,
+            "lat": -37.72
+          },
+          {
+            "label": "Greater Dandenong: 39%",
+            "lon": 145.21,
+            "lat": -37.985
+          },
+          {
+            "label": "Wyndham: 42%",
+            "lon": 144.62,
+            "lat": -37.9
+          }
+        ]
+      },
+      "encoding": {
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "label"
+        }
+      },
+      "mark": {
+        "type": "text",
+        "fontSize": 12,
+        "fontWeight": 600,
+        "color": "#1d2a30"
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "label": "Port Phillip Bay",
+            "lon": 144.85,
+            "lat": -38.08
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "fontSize": 14,
+        "fontStyle": "italic",
+        "color": "#00849e"
+      },
+      "encoding": {
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "label"
+        }
+      }
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": null
+    }
+  }
+}

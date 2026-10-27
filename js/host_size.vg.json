@@ -1,0 +1,172 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "One in three Melbourne Airbnbs is run by a host with six or more",
+    "subtitle": "Share of all Airbnb listings in Greater Melbourne, by how many listings their host runs",
+    "anchor": "start"
+  },
+  "width": 600,
+  "height": 190,
+  "data": {
+    "url": "data/listings_slim.csv"
+  },
+  "transform": [
+    {
+      "calculate": "datum.host_listings == 1 ? 'Just 1 listing' : datum.host_listings <= 5 ? '2 to 5 listings' : datum.host_listings <= 20 ? '6 to 20 listings' : '21 or more listings'",
+      "as": "host_group"
+    },
+    {
+      "aggregate": [
+        {
+          "op": "count",
+          "as": "listings"
+        }
+      ],
+      "groupby": [
+        "host_group"
+      ]
+    },
+    {
+      "joinaggregate": [
+        {
+          "op": "sum",
+          "field": "listings",
+          "as": "total"
+        }
+      ]
+    },
+    {
+      "calculate": "datum.listings / datum.total",
+      "as": "share"
+    },
+    {
+      "calculate": "datum.host_group === '6 to 20 listings' || datum.host_group === '21 or more listings' ? 'Larger operators' : 'Smaller hosts'",
+      "as": "kind"
+    }
+  ],
+  "encoding": {
+    "y": {
+      "field": "host_group",
+      "type": "nominal",
+      "sort": [
+        "Just 1 listing",
+        "2 to 5 listings",
+        "6 to 20 listings",
+        "21 or more listings"
+      ],
+      "title": "Host runs",
+      "axis": {
+        "ticks": false,
+        "domain": false,
+        "labelFontSize": 12,
+        "titleAngle": 0,
+        "titleAlign": "left",
+        "titleAnchor": "end",
+        "titleY": -10,
+        "titleX": -110,
+        "labelLimit": 220
+      }
+    },
+    "x": {
+      "field": "share",
+      "type": "quantitative",
+      "axis": null,
+      "scale": {
+        "domain": [
+          0,
+          0.5
+        ]
+      }
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "bar",
+        "cornerRadiusEnd": 4,
+        "height": 28
+      },
+      "encoding": {
+        "color": {
+          "field": "kind",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Smaller hosts",
+              "Larger operators"
+            ],
+            "range": [
+              "#d9d1c4",
+              "#0d3b45"
+            ]
+          },
+          "legend": null
+        },
+        "tooltip": [
+          {
+            "field": "host_group",
+            "type": "nominal",
+            "title": "Host runs"
+          },
+          {
+            "field": "listings",
+            "type": "quantitative",
+            "title": "Listings",
+            "format": ","
+          },
+          {
+            "field": "share",
+            "type": "quantitative",
+            "title": "Share of all listings",
+            "format": ".0%"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 6,
+        "fontSize": 12,
+        "fontWeight": 600,
+        "color": "#3b4950"
+      },
+      "encoding": {
+        "text": {
+          "field": "share",
+          "type": "quantitative",
+          "format": ".0%"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "host_group": "21 or more listings",
+            "share": 0.235,
+            "note": "Each of these hosts runs between 21 and 310 listings"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "fontSize": 12,
+        "fontStyle": "italic",
+        "color": "#7b858b"
+      },
+      "encoding": {
+        "text": {
+          "field": "note"
+        }
+      }
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": null
+    }
+  }
+}

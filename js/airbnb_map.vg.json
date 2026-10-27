@@ -2,7 +2,10 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": {
     "text": "Where Melbourne's Airbnbs are",
-    "subtitle": "Each dot is one listing. Click a room type in the legend to highlight it.",
+    "subtitle": [
+      "Each dot is one of 25,715 listings on Airbnb in Greater Melbourne. Click a room type",
+      "in the legend to highlight it (shift-click to pick more than one)."
+    ],
     "anchor": "start"
   },
   "width": 700,
@@ -13,10 +16,10 @@
   "layer": [
     {
       "data": {
-        "url": "data/neighbourhoods.geojson",
+        "url": "data/melbourne_lgas.topojson",
         "format": {
-          "type": "json",
-          "property": "features"
+          "type": "topojson",
+          "feature": "lgas"
         }
       },
       "mark": {
@@ -30,14 +33,14 @@
           {
             "field": "properties.neighbourhood",
             "type": "nominal",
-            "title": "Area"
+            "title": "Council area"
           }
         ]
       }
     },
     {
       "data": {
-        "url": "data/listings.csv"
+        "url": "data/listings_slim.csv"
       },
       "params": [
         {
@@ -53,7 +56,7 @@
       ],
       "transform": [
         {
-          "filter": "isValid(datum.latitude) && isValid(datum.longitude)"
+          "filter": "isValid(datum.lat) && isValid(datum.lon)"
         }
       ],
       "mark": {
@@ -62,11 +65,11 @@
       },
       "encoding": {
         "longitude": {
-          "field": "longitude",
+          "field": "lon",
           "type": "quantitative"
         },
         "latitude": {
-          "field": "latitude",
+          "field": "lat",
           "type": "quantitative"
         },
         "color": {
@@ -102,14 +105,9 @@
         },
         "tooltip": [
           {
-            "field": "name",
+            "field": "area",
             "type": "nominal",
-            "title": "Listing"
-          },
-          {
-            "field": "neighbourhood",
-            "type": "nominal",
-            "title": "Area"
+            "title": "Council area"
           },
           {
             "field": "room_type",
@@ -121,6 +119,11 @@
             "type": "quantitative",
             "title": "Price per night",
             "format": "$,.0f"
+          },
+          {
+            "field": "host_listings",
+            "type": "quantitative",
+            "title": "Listings run by this host"
           }
         ]
       }

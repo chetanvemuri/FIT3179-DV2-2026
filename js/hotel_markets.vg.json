@@ -1,0 +1,454 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Hotels in nine of ten cities are earning more per room",
+    "subtitle": [
+      "Change in hotel income per available room, Jan–Jun 2026 vs Jan–Jun 2025. This measure counts empty",
+      "rooms too, so it rises when hotels fill more rooms or charge more. Hover over a city to find it in both views."
+    ],
+    "anchor": "start"
+  },
+  "params": [
+    {
+      "name": "city_pick",
+      "select": {
+        "type": "point",
+        "fields": [
+          "city"
+        ],
+        "on": "mouseover",
+        "clear": "mouseout"
+      },
+      "views": [
+        "hotel_dots",
+        "lolli_dots"
+      ]
+    }
+  ],
+  "spacing": 24,
+  "hconcat": [
+    {
+      "width": 340,
+      "height": 330,
+      "projection": {
+        "type": "conicEqualArea",
+        "parallels": [
+          -18,
+          -36
+        ],
+        "rotate": [
+          -134,
+          0
+        ]
+      },
+      "title": {
+        "text": "Australia's ten biggest hotel markets",
+        "fontSize": 15,
+        "subtitle": "Darker teal = bigger rise in income per room",
+        "subtitleFontSize": 12
+      },
+      "layer": [
+        {
+          "data": {
+            "url": "data/au_states.topojson",
+            "format": {
+              "type": "topojson",
+              "feature": "states"
+            }
+          },
+          "mark": {
+            "type": "geoshape",
+            "fill": "#efe9df",
+            "stroke": "#ffffff",
+            "strokeWidth": 1
+          }
+        },
+        {
+          "data": {
+            "url": "data/hotel_markets_coords.csv"
+          },
+          "transform": [
+            {
+              "lookup": "city",
+              "from": {
+                "data": {
+                  "url": "data/hotel_revpar_growth.csv"
+                },
+                "key": "city",
+                "fields": [
+                  "revpar_change"
+                ]
+              }
+            }
+          ],
+          "name": "hotel_dots",
+          "mark": {
+            "type": "circle",
+            "stroke": "#ffffff",
+            "strokeWidth": 1.2,
+            "opacity": 0.92
+          },
+          "encoding": {
+            "longitude": {
+              "field": "lon",
+              "type": "quantitative"
+            },
+            "latitude": {
+              "field": "lat",
+              "type": "quantitative"
+            },
+            "size": {
+              "value": 150
+            },
+            "color": {
+              "field": "revpar_change",
+              "type": "quantitative",
+              "title": "Change",
+              "scale": {
+                "domain": [
+                  -0.11,
+                  0,
+                  0.11
+                ],
+                "range": [
+                  "#dc5d36",
+                  "#efe9df",
+                  "#00849e"
+                ]
+              },
+              "legend": {
+                "orient": "bottom-left",
+                "direction": "horizontal",
+                "format": "+.0%",
+                "gradientLength": 140,
+                "values": [
+                  -0.1,
+                  0,
+                  0.1
+                ]
+              }
+            },
+            "strokeWidth": {
+              "condition": {
+                "param": "city_pick",
+                "empty": false,
+                "value": 3
+              },
+              "value": 1.2
+            },
+            "stroke": {
+              "condition": {
+                "param": "city_pick",
+                "empty": false,
+                "value": "#1d2a30"
+              },
+              "value": "#ffffff"
+            },
+            "tooltip": [
+              {
+                "field": "city",
+                "type": "nominal",
+                "title": "Market"
+              },
+              {
+                "field": "revpar_change",
+                "type": "quantitative",
+                "title": "Change in income per room",
+                "format": "+.1%"
+              }
+            ]
+          }
+        },
+        {
+          "data": {
+            "url": "data/hotel_markets_coords.csv"
+          },
+          "layer": [
+            {
+              "transform": [
+                {
+                  "filter": "datum.align === 'left'"
+                }
+              ],
+              "mark": {
+                "type": "text",
+                "align": "left",
+                "baseline": "middle",
+                "fontSize": 11,
+                "fontWeight": 600,
+                "color": "#3b4950"
+              },
+              "encoding": {
+                "longitude": {
+                  "field": "label_lon",
+                  "type": "quantitative"
+                },
+                "latitude": {
+                  "field": "label_lat",
+                  "type": "quantitative"
+                },
+                "text": {
+                  "field": "city"
+                }
+              }
+            },
+            {
+              "transform": [
+                {
+                  "filter": "datum.align === 'right'"
+                }
+              ],
+              "mark": {
+                "type": "text",
+                "align": "right",
+                "baseline": "middle",
+                "fontSize": 11,
+                "fontWeight": 600,
+                "color": "#3b4950"
+              },
+              "encoding": {
+                "longitude": {
+                  "field": "label_lon",
+                  "type": "quantitative"
+                },
+                "latitude": {
+                  "field": "label_lat",
+                  "type": "quantitative"
+                },
+                "text": {
+                  "field": "city"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "width": 290,
+      "height": 330,
+      "title": {
+        "text": "Change in income per room",
+        "fontSize": 15,
+        "subtitle": "Jan–Jun 2026 vs Jan–Jun 2025",
+        "subtitleFontSize": 12
+      },
+      "data": {
+        "url": "data/hotel_revpar_growth.csv"
+      },
+      "transform": [
+        {
+          "calculate": "datum.revpar_change < 0 ? 'Fell' : 'Rose'",
+          "as": "direction"
+        },
+        {
+          "calculate": "0",
+          "as": "zero"
+        }
+      ],
+      "encoding": {
+        "y": {
+          "field": "city",
+          "type": "nominal",
+          "sort": {
+            "field": "revpar_change",
+            "order": "descending"
+          },
+          "title": null,
+          "axis": {
+            "ticks": false,
+            "domain": false,
+            "labelFontSize": 12,
+            "labelPadding": 8
+          }
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "rule",
+            "strokeWidth": 2
+          },
+          "encoding": {
+            "x": {
+              "type": "quantitative",
+              "scale": {
+                "domain": [
+                  -0.03,
+                  0.13
+                ]
+              },
+              "axis": {
+                "format": "+.0%",
+                "tickCount": 7,
+                "grid": false,
+                "domain": false,
+                "title": null,
+                "labelColor": "#5b6770"
+              },
+              "field": "zero"
+            },
+            "x2": {
+              "field": "revpar_change"
+            },
+            "color": {
+              "field": "direction",
+              "type": "nominal",
+              "scale": {
+                "domain": [
+                  "Rose",
+                  "Fell"
+                ],
+                "range": [
+                  "#9fd0da",
+                  "#f0b29d"
+                ]
+              },
+              "legend": null
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "circle",
+            "size": 140,
+            "opacity": 1
+          },
+          "encoding": {
+            "x": {
+              "field": "revpar_change",
+              "type": "quantitative"
+            },
+            "color": {
+              "field": "direction",
+              "type": "nominal",
+              "scale": {
+                "domain": [
+                  "Rose",
+                  "Fell"
+                ],
+                "range": [
+                  "#00849e",
+                  "#dc5d36"
+                ]
+              },
+              "legend": null
+            },
+            "tooltip": [
+              {
+                "field": "city",
+                "type": "nominal",
+                "title": "City"
+              },
+              {
+                "field": "revpar_change",
+                "type": "quantitative",
+                "title": "Change",
+                "format": "+.1%"
+              }
+            ],
+            "size": {
+              "condition": {
+                "param": "city_pick",
+                "empty": false,
+                "value": 260
+              },
+              "value": 140
+            }
+          },
+          "name": "lolli_dots"
+        },
+        {
+          "transform": [
+            {
+              "filter": "datum.revpar_change >= 0"
+            }
+          ],
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "dx": 10,
+            "fontSize": 11,
+            "color": "#5b6770"
+          },
+          "encoding": {
+            "x": {
+              "field": "revpar_change",
+              "type": "quantitative"
+            },
+            "text": {
+              "field": "revpar_change",
+              "type": "quantitative",
+              "format": "+.1%"
+            }
+          }
+        },
+        {
+          "transform": [
+            {
+              "filter": "datum.revpar_change < 0"
+            }
+          ],
+          "mark": {
+            "type": "text",
+            "align": "right",
+            "dx": -10,
+            "fontSize": 11,
+            "color": "#b23f1b"
+          },
+          "encoding": {
+            "x": {
+              "field": "revpar_change",
+              "type": "quantitative"
+            },
+            "text": {
+              "field": "revpar_change",
+              "type": "quantitative",
+              "format": "+.1%"
+            }
+          }
+        },
+        {
+          "data": {
+            "values": [
+              {
+                "zero": 0
+              }
+            ]
+          },
+          "mark": {
+            "type": "rule",
+            "color": "#a39a8c",
+            "strokeDash": [
+              3,
+              3
+            ]
+          },
+          "encoding": {
+            "x": {
+              "field": "zero",
+              "type": "quantitative"
+            },
+            "y": null
+          }
+        }
+      ],
+      "resolve": {
+        "scale": {
+          "color": "independent"
+        }
+      }
+    }
+  ],
+  "resolve": {
+    "scale": {
+      "color": "independent",
+      "size": "independent"
+    }
+  },
+  "config": {
+    "view": {
+      "stroke": null
+    }
+  }
+}

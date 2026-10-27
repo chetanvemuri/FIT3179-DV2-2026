@@ -1,0 +1,11 @@
+city,lon,lat,label_lon,label_lat,align
+Sunshine Coast,153.07,-26.65,154.2,-26.1,left
+Brisbane,153.03,-27.47,154.2,-27.5,left
+Gold Coast,153.43,-28.02,154.2,-28.9,left
+Newcastle,151.78,-32.93,153.0,-32.5,left
+Sydney,151.21,-33.87,152.4,-34.2,left
+Canberra,149.13,-35.28,148.2,-35.6,right
+Melbourne,144.96,-37.81,143.9,-37.6,right
+Hobart,147.33,-42.88,146.0,-42.9,right
+Adelaide,138.60,-34.93,137.4,-34.7,right
+Perth,115.86,-31.95,114.9,-31.95,right

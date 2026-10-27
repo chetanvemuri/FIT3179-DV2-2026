@@ -188,6 +188,31 @@
       box-shadow: 0 6px 20px rgba(0,0,0,0.12) !important;
     }
 
+    /* ---------- Takeaways ---------- */
+    .takeaways {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .takeaway {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-top: 4px solid var(--ocean);
+      border-radius: 14px;
+      padding: 18px 20px 6px;
+    }
+    .takeaway:nth-child(2) { border-top-color: var(--terracotta); }
+    .takeaway:nth-child(3) { border-top-color: var(--ocean-deep); }
+    .story .takeaway p { font-size: 0.95rem; line-height: 1.55; margin: 0 0 12px; }
+    .story .takeaway .takeaway-num {
+      font-family: var(--serif);
+      font-size: 2rem;
+      font-weight: 600;
+      line-height: 1;
+      color: var(--ink);
+      margin: 0 0 10px;
+    }
+
     /* ---------- Footer ---------- */
     footer {
       margin-top: 96px;
@@ -215,6 +240,7 @@
       .hero { padding: 48px 16px 48px; }
       .glance { grid-template-columns: 1fr; }
       .chart-card { padding: 16px 12px 12px; }
+      .takeaways { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -305,7 +331,7 @@
         recovered only around three quarters.
       </p>
       <div class="chart-card"><div id="intl_visitors_map"></div></div>
-      <p class="chart-note">July is winter, which favours warmer northern states. Hover over a state for visitor numbers.</p>
+      <p class="chart-note">Comparing July with July means the normal seasonal ups and downs cancel out. Hover over a state for visitor numbers.</p>
     </section>
 
     <section class="story">
@@ -325,11 +351,19 @@
       <h3>Where our visitors come from</h3>
       <p>
         In July 2019, China sent more visitors to Australia than any other
-        country. In July 2026, <span class="hl-terra">New Zealand</span> took
-        the top spot with about 134,000 visitors, while visitors from China fell
-        by around a fifth to 117,000.
+        country. In July 2026, <span class="hl-ocean">New Zealand</span> took
+        the top spot with about 134,000 visitors, while visitors from
+        <span class="hl-terra">China</span> fell by around a fifth to 117,000.
+        Visitors from the United States and Hong Kong have fallen even further.
       </p>
-      <div class="chart-card"><div id="top_countries"></div></div>
+      <p>
+        Closer to home, the picture is brighter. <strong>Taiwan</strong> sent
+        39% more visitors than in 2019 and <strong>South Korea</strong> 21% more,
+        and India has also edged past its old numbers. Hover over a country to
+        follow it from the map to the chart below.
+      </p>
+      <div class="chart-card"><div id="visitor_origins"></div></div>
+      <p class="chart-note">Lines are drawn straight to the centre of Australia to show which countries send the most people; they are not real flight paths.</p>
     </section>
 
     <!-- ================= Chapter 3 ================= -->
@@ -339,34 +373,106 @@
     </div>
 
     <section class="story">
-      <h3>The Airbnb boom in Melbourne</h3>
+      <h3>The Airbnb map of Melbourne</h3>
       <p>
         Hotels are not the only place visitors sleep. Across Greater Melbourne,
-        thousands of homes are listed on Airbnb, and they are not spread evenly.
-        Listings crowd into the <strong>city centre</strong> and run in a thick
-        line down the bay, from St Kilda through Brighton to Frankston and the
-        Mornington Peninsula, where holidaymakers want to be near the water.
+        <strong>25,715 homes and rooms</strong> are listed on Airbnb, and they are
+        not spread evenly. One in three is in the City of Melbourne alone. From
+        there, listings run in a thick line down the bay, from St Kilda through
+        Brighton to Frankston, where holidaymakers want to be near the water.
+        Smaller clusters sit in the Dandenong Ranges and the Yarra Valley.
       </p>
       <p>
-        Most of these listings are <span class="hl-ocean">entire homes or
-        apartments</span>, not spare rooms. Rooms in someone's own home are
-        more common in the outer suburbs to the west and south-east. Click a
-        room type in the legend to see where each kind of listing sits.
+        Most of these listings, almost three in four, are
+        <span class="hl-ocean">entire homes or apartments</span>.
+        <span class="hl-terra">Private rooms</span> in someone's home are more
+        common in the outer suburbs to the west and south-east. Click a room
+        type in the legend to see where each kind of listing sits.
       </p>
       <div class="chart-card"><div id="airbnb_map"></div></div>
     </section>
 
     <section class="story">
-      <h3>A good year for city hotels</h3>
+      <h3>Whole homes in the city and the hills</h3>
+      <p>
+        Adding the dots up by council area makes the pattern clearer. In the
+        inner city, along the bay and in the <span class="hl-ocean">Yarra
+        Ranges</span>, more than 80% of listings are whole homes: apartments for
+        city visitors and cottages for weekenders. In
+        <span class="hl-terra">Greater Dandenong</span> and
+        <span class="hl-terra">Wyndham</span>, fewer than half are, because more
+        locals rent out a spare room to earn some extra money.
+      </p>
+      <div class="chart-card"><div id="melbourne_choropleth"></div></div>
+    </section>
+
+    <section class="story">
+      <h3>What a night costs</h3>
+      <p>
+        The kind of listing makes a big difference to the price. A typical
+        entire home in Melbourne costs <span class="hl-ocean">$302 a night</span>,
+        while a typical private room costs
+        <span class="hl-terra">$109</span>. Room prices are bunched tightly
+        between about $50 and $150. Whole homes spread out much further, from
+        small studios to large holiday houses at many hundreds of dollars a
+        night.
+      </p>
+      <div class="chart-card"><div id="price_histogram"></div></div>
+    </section>
+
+    <section class="story">
+      <h3>Not just people renting out their spare room</h3>
+      <p>
+        Airbnb is often pictured as ordinary people sharing their own home. In
+        Melbourne, <strong>44%</strong> of listings belong to hosts with just
+        one listing. But <span class="hl-terra">one in three</span> belongs to a
+        host who runs six or more, and in the City of Melbourne that rises to
+        about half. For these hosts, short stays are a business rather
+        than a way to earn a little from a spare room.
+      </p>
+      <div class="chart-card"><div id="host_size"></div></div>
+    </section>
+
+    <section class="story">
+      <h3>A good year for hotels</h3>
       <p>
         Fewer international visitors has not meant a bad year for hotels. In
         the first half of 2026, hotels in nine of Australia's ten biggest hotel
         markets earned more per room than a year earlier, led by the
-        <span class="hl-ocean">Sunshine Coast</span> at more than 10%.
-        <span class="hl-terra">Canberra</span> was the only market to slip,
-        and only just.
+        <span class="hl-ocean">Sunshine Coast</span> at more than 10%, then
+        Adelaide and Sydney. <span class="hl-terra">Canberra</span> was the only
+        market to slip, and only just. Melbourne grew, but more slowly than
+        most, at 3%.
       </p>
-      <div class="chart-card"><div id="hotel_revpar"></div></div>
+      <div class="chart-card"><div id="hotel_markets"></div></div>
+    </section>
+
+    <!-- ================= Closing ================= -->
+    <div class="chapter">
+      <p class="chapter-label"><span>04</span> What it means</p>
+      <h2 class="chapter-title">The bottom line</h2>
+    </div>
+
+    <section class="story takeaways">
+      <div class="takeaway">
+        <p class="takeaway-num">1</p>
+        <p><strong>The recovery is uneven.</strong> Overseas arrivals are still
+        about 10% below 2019, and furthest behind in Tasmania, the NT and the
+        ACT. At home, many trips are to see friends and family, often with no
+        paid bed at all.</p>
+      </div>
+      <div class="takeaway">
+        <p class="takeaway-num">2</p>
+        <p><strong>Timing and origin matter.</strong> Most states are busiest in
+        summer, the Top End in winter, and the growth now comes from Asian
+        neighbours such as Korea and Taiwan rather than China or the US.</p>
+      </div>
+      <div class="takeaway">
+        <p class="takeaway-num">3</p>
+        <p><strong>Where we stay is changing.</strong> Melbourne's Airbnbs are
+        mostly whole homes, many run by larger operators, while hotels across
+        the country are still earning more per room than a year ago.</p>
+      </div>
     </section>
 
   </main>
@@ -375,7 +481,7 @@
     <div class="footer-inner">
       <h4>Data sources</h4>
       <ol>
-        <li>Inside Airbnb, Melbourne listings and neighbourhood boundaries, [date of snapshot].
+        <li>Inside Airbnb, Melbourne (Victoria) listings summary and neighbourhood (council area) boundaries, [snapshot date shown on the download page]. Licensed CC BY 4.0. To keep the page fast, unused columns were removed and the boundaries simplified; council-area totals were calculated from the listings.
           <a href="https://insideairbnb.com/get-the-data/">insideairbnb.com</a></li>
         <li>Tourism Research Australia, Domestic Tourism Statistics, overnight trips by main reason, June quarter 2026.
           <a href="https://www.tra.gov.au/en/domestic/domestic-tourism-results">tra.gov.au</a></li>
@@ -385,6 +491,8 @@
           <a href="https://www.abs.gov.au/statistics/economy/national-accounts/australian-national-accounts-tourism-satellite-account/latest-release">abs.gov.au</a></li>
         <li>Horwath HTL, Australia Key Markets Hotel Market Outlook, June quarter 2026 (hotel data from STR).
           <a href="https://horwathhtl.com/wp-content/uploads/2026/09/Horwath-HTL-Jun26-Quarterly-Hotel-Market-Outlook-F260908-1.pdf">horwathhtl.com</a></li>
+        <li>World country boundaries: Natural Earth 1:110m, via the world-atlas package (public domain).
+          <a href="https://github.com/topojson/world-atlas">github.com/topojson/world-atlas</a></li>
         <li>Australian state boundaries, based on ABS data.
           <a href="https://github.com/rowanhogan/australian-states">github.com/rowanhogan/australian-states</a></li>
       </ol>
@@ -396,20 +504,27 @@
         Fonts: Fraunces and Work Sans (Google Fonts).
       </p>
       <p class="small">
-        AI acknowledgement: [Describe how you used generative AI tools in this project.]
+        AI acknowledgement: Claude (Anthropic) was used to help write and debug the Vega-Lite chart
+        specifications, reduce the size of the data files, and check the grammar and wording of the text.
+        All charts were reviewed against the source data by the author.
       </p>
     </div>
   </footer>
 
   <script>
     const opts = {actions: false, renderer: "svg", config: THEME};
+    // The Airbnb map draws 25,000+ dots, so it uses the faster canvas renderer.
+    const canvasOpts = {actions: false, renderer: "canvas", config: THEME};
     vegaEmbed("#nights_by_reason", "js/nights_by_reason.vg.json", opts);
     vegaEmbed("#tourism_spend", "js/tourism_spend_dotplot.vg.json", opts);
     vegaEmbed("#intl_visitors_map", "js/intl_visitors_choropleth.vg.json", opts);
     vegaEmbed("#seasons_heatmap", "js/seasons_heatmap.vg.json", opts);
-    vegaEmbed("#top_countries", "js/top_countries.vg.json", opts);
-    vegaEmbed("#airbnb_map", "js/airbnb_map.vg.json", opts);
-    vegaEmbed("#hotel_revpar", "js/hotel_revpar_lollipop.vg.json", opts);
+    vegaEmbed("#visitor_origins", "js/visitor_origins.vg.json", opts);
+    vegaEmbed("#airbnb_map", "js/airbnb_map.vg.json", canvasOpts);
+    vegaEmbed("#melbourne_choropleth", "js/melbourne_choropleth.vg.json", opts);
+    vegaEmbed("#price_histogram", "js/price_histogram.vg.json", opts);
+    vegaEmbed("#host_size", "js/host_size.vg.json", opts);
+    vegaEmbed("#hotel_markets", "js/hotel_markets.vg.json", opts);
   </script>
 </body>
 </html>

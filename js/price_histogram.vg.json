@@ -1,0 +1,229 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "A whole home costs almost three times as much as a room",
+    "subtitle": [
+      "Number of Melbourne Airbnb listings at each nightly price, in $25 steps. The dashed line marks",
+      "the typical (middle) price: half the listings cost less and half cost more. Listings above $1,000",
+      "a night (about 2.5%) and listings with no current price are left out."
+    ],
+    "anchor": "start"
+  },
+  "data": {
+    "url": "data/listings_slim.csv"
+  },
+  "transform": [
+    {
+      "filter": "isValid(datum.price) && (datum.room_type === 'Entire home/apt' || datum.room_type === 'Private room')"
+    },
+    {
+      "joinaggregate": [
+        {
+          "op": "median",
+          "field": "price",
+          "as": "median_price"
+        },
+        {
+          "op": "count",
+          "as": "n"
+        }
+      ],
+      "groupby": [
+        "room_type"
+      ]
+    },
+    {
+      "filter": "datum.price <= 1000"
+    },
+    {
+      "calculate": "datum.room_type === 'Entire home/apt' ? 'Entire home or apartment' : 'Private room in a home'",
+      "as": "type_label"
+    }
+  ],
+  "facet": {
+    "row": {
+      "field": "type_label",
+      "type": "nominal",
+      "title": null,
+      "sort": [
+        "Entire home or apartment",
+        "Private room in a home"
+      ],
+      "header": {
+        "labelAngle": 0,
+        "labelAlign": "left",
+        "labelAnchor": "start",
+        "labelOrient": "top",
+        "labelFontSize": 14,
+        "labelFontWeight": 600,
+        "labelPadding": 4
+      }
+    }
+  },
+  "spacing": 18,
+  "resolve": {
+    "scale": {
+      "y": "independent"
+    }
+  },
+  "spec": {
+    "width": 640,
+    "height": 150,
+    "layer": [
+      {
+        "mark": {
+          "type": "bar",
+          "binSpacing": 1,
+          "cornerRadiusTopLeft": 2,
+          "cornerRadiusTopRight": 2
+        },
+        "encoding": {
+          "x": {
+            "field": "price",
+            "type": "quantitative",
+            "bin": {
+              "step": 25,
+              "extent": [
+                0,
+                1000
+              ]
+            },
+            "title": "Price per night",
+            "axis": {
+              "format": "$,.0f",
+              "values": [
+                0,
+                100,
+                200,
+                300,
+                400,
+                500,
+                600,
+                700,
+                800,
+                900,
+                1000
+              ],
+              "grid": false
+            }
+          },
+          "y": {
+            "aggregate": "count",
+            "type": "quantitative",
+            "title": "Listings",
+            "axis": {
+              "tickCount": 4,
+              "domain": false,
+              "ticks": false
+            }
+          },
+          "color": {
+            "field": "type_label",
+            "type": "nominal",
+            "scale": {
+              "domain": [
+                "Entire home or apartment",
+                "Private room in a home"
+              ],
+              "range": [
+                "#00849e",
+                "#dc5d36"
+              ]
+            },
+            "legend": null
+          },
+          "tooltip": [
+            {
+              "field": "type_label",
+              "type": "nominal",
+              "title": "Room type"
+            },
+            {
+              "field": "price",
+              "bin": {
+                "step": 25,
+                "extent": [
+                  0,
+                  1000
+                ]
+              },
+              "type": "quantitative",
+              "title": "Price range",
+              "format": "$,.0f"
+            },
+            {
+              "aggregate": "count",
+              "type": "quantitative",
+              "title": "Listings",
+              "format": ","
+            }
+          ]
+        }
+      },
+      {
+        "transform": [
+          {
+            "aggregate": [
+              {
+                "op": "max",
+                "field": "median_price",
+                "as": "median_price"
+              }
+            ],
+            "groupby": [
+              "type_label"
+            ]
+          },
+          {
+            "calculate": "'Typical: $' + format(datum.median_price, ',.0f')",
+            "as": "median_label"
+          }
+        ],
+        "layer": [
+          {
+            "mark": {
+              "type": "rule",
+              "strokeDash": [
+                4,
+                3
+              ],
+              "strokeWidth": 1.5,
+              "color": "#1d2a30"
+            },
+            "encoding": {
+              "x": {
+                "field": "median_price",
+                "type": "quantitative"
+              }
+            }
+          },
+          {
+            "mark": {
+              "type": "text",
+              "align": "left",
+              "dx": 6,
+              "y": 8,
+              "fontSize": 12,
+              "fontWeight": 600,
+              "color": "#1d2a30"
+            },
+            "encoding": {
+              "x": {
+                "field": "median_price",
+                "type": "quantitative"
+              },
+              "text": {
+                "field": "median_label"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "config": {
+    "view": {
+      "stroke": null
+    }
+  }
+}

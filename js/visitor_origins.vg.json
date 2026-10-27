@@ -1,0 +1,587 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Fewer visitors from China and the US, more from Korea and Taiwan",
+    "subtitle": [
+      "Short-term overseas visitors arriving in Australia in July 2026, top 10 countries of residence.",
+      "Circle size shows visitors in July 2026; colour shows the change since July 2019.",
+      "Hover over a country on the map or in the chart below to highlight it in both."
+    ],
+    "anchor": "start"
+  },
+  "params": [
+    {
+      "name": "pick",
+      "select": {
+        "type": "point",
+        "fields": [
+          "country"
+        ],
+        "on": "mouseover",
+        "clear": "mouseout"
+      },
+      "views": [
+        "map_dots",
+        "dumbbell_dots"
+      ]
+    }
+  ],
+  "spacing": 30,
+  "vconcat": [
+    {
+      "width": 760,
+      "height": 390,
+      "projection": {
+        "type": "equalEarth",
+        "rotate": [
+          -150,
+          0,
+          0
+        ]
+      },
+      "layer": [
+        {
+          "data": {
+            "sphere": true
+          },
+          "mark": {
+            "type": "geoshape",
+            "fill": "#f2f7f8",
+            "stroke": "#d6e4e7"
+          }
+        },
+        {
+          "data": {
+            "url": "data/world_110m.topojson",
+            "format": {
+              "type": "topojson",
+              "feature": "countries"
+            }
+          },
+          "mark": {
+            "type": "geoshape",
+            "stroke": "#ffffff",
+            "strokeWidth": 0.5
+          },
+          "encoding": {
+            "color": {
+              "condition": {
+                "test": "datum.properties.name === 'Australia'",
+                "value": "#0d3b45"
+              },
+              "value": "#e3ddd2"
+            }
+          }
+        },
+        {
+          "data": {
+            "url": "data/visitor_origins.csv"
+          },
+          "transform": [
+            {
+              "lookup": "country",
+              "from": {
+                "data": {
+                  "url": "data/top_countries.csv"
+                },
+                "key": "country",
+                "fields": [
+                  "jul_2019",
+                  "jul_2026"
+                ]
+              }
+            },
+            {
+              "calculate": "134",
+              "as": "au_lon"
+            },
+            {
+              "calculate": "-25",
+              "as": "au_lat"
+            }
+          ],
+          "mark": {
+            "type": "rule",
+            "strokeCap": "round"
+          },
+          "encoding": {
+            "longitude": {
+              "field": "lon",
+              "type": "quantitative"
+            },
+            "latitude": {
+              "field": "lat",
+              "type": "quantitative"
+            },
+            "longitude2": {
+              "field": "au_lon"
+            },
+            "latitude2": {
+              "field": "au_lat"
+            },
+            "strokeWidth": {
+              "field": "jul_2026",
+              "type": "quantitative",
+              "scale": {
+                "domain": [
+                  0,
+                  140000
+                ],
+                "range": [
+                  0,
+                  7
+                ]
+              },
+              "legend": null
+            },
+            "color": {
+              "value": "#7fb9c5"
+            },
+            "opacity": {
+              "condition": {
+                "param": "pick",
+                "empty": true,
+                "value": 0.55
+              },
+              "value": 0.12
+            }
+          }
+        },
+        {
+          "data": {
+            "url": "data/visitor_origins.csv"
+          },
+          "transform": [
+            {
+              "lookup": "country",
+              "from": {
+                "data": {
+                  "url": "data/top_countries.csv"
+                },
+                "key": "country",
+                "fields": [
+                  "jul_2019",
+                  "jul_2026"
+                ]
+              }
+            },
+            {
+              "calculate": "(datum.jul_2026 - datum.jul_2019) / datum.jul_2019",
+              "as": "change"
+            }
+          ],
+          "mark": {
+            "type": "circle",
+            "stroke": "#ffffff",
+            "strokeWidth": 1,
+            "opacity": 0.95
+          },
+          "encoding": {
+            "longitude": {
+              "field": "lon",
+              "type": "quantitative"
+            },
+            "latitude": {
+              "field": "lat",
+              "type": "quantitative"
+            },
+            "size": {
+              "field": "jul_2026",
+              "type": "quantitative",
+              "title": "Visitors, July 2026",
+              "scale": {
+                "domain": [
+                  0,
+                  140000
+                ],
+                "range": [
+                  0,
+                  1400
+                ]
+              },
+              "legend": {
+                "orient": "bottom-left",
+                "values": [
+                  25000,
+                  75000,
+                  125000
+                ],
+                "format": "~s",
+                "symbolFillColor": "#bcb4a7",
+                "symbolStrokeColor": "#ffffff",
+                "titleLimit": 200,
+                "labelExpr": "format(datum.value/1000,',') + 'k'"
+              }
+            },
+            "color": {
+              "field": "change",
+              "type": "quantitative",
+              "title": "Change since July 2019",
+              "scale": {
+                "domain": [
+                  -0.4,
+                  0,
+                  0.4
+                ],
+                "range": [
+                  "#dc5d36",
+                  "#efe9df",
+                  "#00849e"
+                ]
+              },
+              "legend": {
+                "orient": "bottom-right",
+                "direction": "horizontal",
+                "format": "+.0%",
+                "gradientLength": 180,
+                "titleLimit": 220,
+                "values": [
+                  -0.4,
+                  -0.2,
+                  0,
+                  0.2,
+                  0.4
+                ]
+              }
+            },
+            "tooltip": [
+              {
+                "field": "country",
+                "type": "nominal",
+                "title": "Country"
+              },
+              {
+                "field": "jul_2026",
+                "type": "quantitative",
+                "title": "Visitors, July 2026",
+                "format": ","
+              },
+              {
+                "field": "jul_2019",
+                "type": "quantitative",
+                "title": "Visitors, July 2019",
+                "format": ","
+              },
+              {
+                "field": "change",
+                "type": "quantitative",
+                "title": "Change since 2019",
+                "format": "+.0%"
+              }
+            ],
+            "opacity": {
+              "condition": {
+                "param": "pick",
+                "empty": true,
+                "value": 0.95
+              },
+              "value": 0.25
+            }
+          },
+          "name": "map_dots"
+        },
+        {
+          "data": {
+            "url": "data/visitor_origins.csv"
+          },
+          "transform": [
+            {
+              "filter": "indexof(['New Zealand', 'China', 'USA', 'UK', 'India', 'Japan'], datum.country) >= 0"
+            }
+          ],
+          "mark": {
+            "type": "text",
+            "fontSize": 12,
+            "fontWeight": 600,
+            "dy": -20,
+            "color": "#1d2a30"
+          },
+          "encoding": {
+            "longitude": {
+              "field": "lon",
+              "type": "quantitative"
+            },
+            "latitude": {
+              "field": "lat",
+              "type": "quantitative"
+            },
+            "text": {
+              "field": "country"
+            }
+          }
+        },
+        {
+          "data": {
+            "values": [
+              {
+                "label": "Australia",
+                "lon": 134,
+                "lat": -25
+              }
+            ]
+          },
+          "mark": {
+            "type": "text",
+            "fontSize": 12,
+            "fontWeight": 600,
+            "color": "#ffffff"
+          },
+          "encoding": {
+            "longitude": {
+              "field": "lon",
+              "type": "quantitative"
+            },
+            "latitude": {
+              "field": "lat",
+              "type": "quantitative"
+            },
+            "text": {
+              "field": "label"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "width": 600,
+      "height": 300,
+      "title": {
+        "text": "Visitors in July 2019 and July 2026",
+        "subtitle": "Hollow dot = July 2019, filled dot = July 2026. Countries ordered by visitors in 2026.",
+        "fontSize": 16
+      },
+      "data": {
+        "url": "data/top_countries.csv"
+      },
+      "transform": [
+        {
+          "calculate": "(datum.jul_2026 - datum.jul_2019) / datum.jul_2019",
+          "as": "change"
+        },
+        {
+          "calculate": "datum.change >= 0 ? 'More visitors' : 'Fewer visitors'",
+          "as": "direction"
+        },
+        {
+          "calculate": "max(datum.jul_2019, datum.jul_2026)",
+          "as": "xmax"
+        }
+      ],
+      "encoding": {
+        "y": {
+          "field": "country",
+          "type": "nominal",
+          "sort": [
+            "New Zealand",
+            "China",
+            "USA",
+            "Japan",
+            "UK",
+            "Singapore",
+            "India",
+            "South Korea",
+            "Taiwan",
+            "Hong Kong"
+          ],
+          "title": null,
+          "axis": {
+            "ticks": false,
+            "domain": false,
+            "labelFontSize": 12,
+            "grid": true,
+            "gridColor": "#f1ede6"
+          }
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "rule",
+            "strokeWidth": 3
+          },
+          "encoding": {
+            "x": {
+              "field": "jul_2019",
+              "type": "quantitative",
+              "title": "Visitors in July",
+              "scale": {
+                "domain": [
+                  0,
+                  160000
+                ]
+              },
+              "axis": {
+                "format": "~s",
+                "grid": false,
+                "domain": false,
+                "tickCount": 8
+              }
+            },
+            "x2": {
+              "field": "jul_2026"
+            },
+            "color": {
+              "field": "direction",
+              "type": "nominal",
+              "title": null,
+              "scale": {
+                "domain": [
+                  "More visitors",
+                  "Fewer visitors"
+                ],
+                "range": [
+                  "#9fd0da",
+                  "#f0b29d"
+                ]
+              },
+              "legend": null
+            },
+            "opacity": {
+              "condition": {
+                "param": "pick",
+                "empty": true,
+                "value": 1
+              },
+              "value": 0.25
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "point",
+            "filled": false,
+            "size": 90,
+            "strokeWidth": 2,
+            "color": "#7b858b"
+          },
+          "encoding": {
+            "x": {
+              "field": "jul_2019",
+              "type": "quantitative"
+            },
+            "opacity": {
+              "condition": {
+                "param": "pick",
+                "empty": true,
+                "value": 1
+              },
+              "value": 0.25
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "circle",
+            "size": 110,
+            "opacity": 1
+          },
+          "encoding": {
+            "x": {
+              "field": "jul_2026",
+              "type": "quantitative"
+            },
+            "color": {
+              "field": "direction",
+              "type": "nominal",
+              "scale": {
+                "domain": [
+                  "More visitors",
+                  "Fewer visitors"
+                ],
+                "range": [
+                  "#00849e",
+                  "#dc5d36"
+                ]
+              },
+              "legend": {
+                "orient": "top",
+                "direction": "horizontal",
+                "symbolSize": 110,
+                "title": null,
+                "offset": 6
+              },
+              "title": null
+            },
+            "opacity": {
+              "condition": {
+                "param": "pick",
+                "empty": true,
+                "value": 1
+              },
+              "value": 0.25
+            },
+            "tooltip": [
+              {
+                "field": "country",
+                "type": "nominal",
+                "title": "Country"
+              },
+              {
+                "field": "jul_2026",
+                "type": "quantitative",
+                "title": "Visitors, July 2026",
+                "format": ","
+              },
+              {
+                "field": "jul_2019",
+                "type": "quantitative",
+                "title": "Visitors, July 2019",
+                "format": ","
+              },
+              {
+                "field": "change",
+                "type": "quantitative",
+                "title": "Change since 2019",
+                "format": "+.0%"
+              }
+            ]
+          },
+          "name": "dumbbell_dots"
+        },
+        {
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "dx": 12,
+            "fontSize": 11,
+            "fontWeight": 600
+          },
+          "encoding": {
+            "x": {
+              "field": "xmax",
+              "type": "quantitative"
+            },
+            "text": {
+              "field": "change",
+              "type": "quantitative",
+              "format": "+.0%"
+            },
+            "color": {
+              "condition": {
+                "test": "datum.change >= 0",
+                "value": "#00849e"
+              },
+              "value": "#b23f1b"
+            }
+          }
+        }
+      ],
+      "resolve": {
+        "scale": {
+          "color": "independent"
+        }
+      }
+    }
+  ],
+  "resolve": {
+    "scale": {
+      "color": "independent",
+      "size": "independent"
+    }
+  },
+  "config": {
+    "view": {
+      "stroke": null
+    }
+  }
+}
